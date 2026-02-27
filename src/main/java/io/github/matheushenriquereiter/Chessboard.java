@@ -9,20 +9,28 @@ public class Chessboard extends JFrame {
         setResizable(false);
         setLayout(new GridLayout(8, 8));
 
-        createSquares();
+        Square[][] squares = createSquares();
+
+        squares[6][1].setPiece(new Pawn(Colors.WHITE));
+        squares[1][1].setPiece(new Pawn(Colors.BLACK));
 
         setVisible(true);
         pack();
     }
 
-    public void createSquares() {
+    public Square[][] createSquares() {
+        Square[][] squares = new Square[8][8];
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Color color = (i + j) % 2 == 0 ? Color.BLACK : Color.WHITE;
+                Color color = (i + j) % 2 == 0 ? new Color(0xE8EDF9) : new Color(0xB7C0D8);
 
                 Square square = new Square(color);
+                squares[i][j] = square;
                 add(square);
             }
         }
+
+        return squares;
     }
 }

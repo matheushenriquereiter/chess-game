@@ -9,4 +9,10 @@ public class Square extends JButton {
         setBackground(color);
         setBorderPainted(false);
     }
+
+    public void setPiece(Piece piece) {
+        Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);
+        setIcon(icon);
+    }
 }
