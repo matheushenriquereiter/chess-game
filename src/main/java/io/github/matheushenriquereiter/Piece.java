@@ -1,5 +1,7 @@
 package io.github.matheushenriquereiter;
 
+import java.util.List;
+
 public abstract class Piece {
     private final Colors color;
 
@@ -14,5 +16,5 @@ public abstract class Piece {
         return "src/main/resources/%s-%s.png".formatted(pieceColor, pieceName);
     }
 
-    public abstract int[][] getMovements(int x, int y);
+    public abstract List<List<Integer>> getMovements(int x, int y, Square[][] squares);
 }

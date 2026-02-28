@@ -2,12 +2,12 @@ package io.github.matheushenriquereiter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class Chessboard extends JFrame {
     private Square[][] boardSquares;
     private Square selectedSquare;
     private Piece selectedPiece;
-    private int[][] possibleMovements;
 
     public Chessboard() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -17,8 +17,10 @@ public class Chessboard extends JFrame {
         this.boardSquares = createSquares();
 
         Pawn pawn = new Pawn(Colors.WHITE);
+        Pawn pawn1 = new Pawn(Colors.BLACK);
 
         boardSquares[6][1].setPiece(pawn);
+        boardSquares[2][1].setPiece(pawn1);
 
         setVisible(true);
         pack();
@@ -59,10 +61,13 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
-        int[][] movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition());
+        List<List<Integer>> movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
 
-        for (int[] movement : movements) {
-            if (square.getXPosition() == movement[0] && square.getYPosition() == movement[1]) {
+        for (List<Integer> movement : movements) {
+            System.out.println(movement);
+            System.out.println(square.getXPosition());
+            System.out.println(square.getYPosition());
+            if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
                 return true;
             }
         }
