@@ -1,11 +1,9 @@
 package io.github.matheushenriquereiter;
 
-import java.awt.*;
-
 public abstract class Piece {
-    private Colors color;
+    private final Colors color;
 
-    public Piece(Colors color) {
+    protected Piece(Colors color) {
         this.color = color;
     }
 
@@ -15,4 +13,6 @@ public abstract class Piece {
 
         return "src/main/resources/%s-%s.png".formatted(pieceColor, pieceName);
     }
+
+    public abstract int[][] getMovements(int x, int y);
 }
