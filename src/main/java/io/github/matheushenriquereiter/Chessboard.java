@@ -19,6 +19,7 @@ public class Chessboard extends JFrame {
         Pawn pawn = new Pawn(Colors.WHITE);
         Pawn pawn1 = new Pawn(Colors.WHITE);
         Bishop bishop = new Bishop(Colors.WHITE);
+        Queen queen = new Queen(Colors.WHITE);
 
         Rook rook = new Rook(Colors.BLACK);
 
@@ -26,6 +27,7 @@ public class Chessboard extends JFrame {
         boardSquares[6][0].setPiece(pawn);
         boardSquares[0][0].setPiece(rook);
         boardSquares[4][4].setPiece(bishop);
+        boardSquares[3][3].setPiece(queen);
 
         setVisible(true);
         pack();
@@ -53,7 +55,7 @@ public class Chessboard extends JFrame {
 
                             square.setPiece(selectedPiece);
                             selectedSquare.removePiece();
-                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+//                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
                         }
 
                         selectedSquare = null;
