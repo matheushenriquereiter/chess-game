@@ -9,6 +9,10 @@ public abstract class Piece {
         this.color = color;
     }
 
+    public Colors getColor() {
+        return color;
+    }
+
     public String getIconPath() {
         String pieceName = getClass().getSimpleName().toLowerCase();
         String pieceColor = color.toString().toLowerCase();

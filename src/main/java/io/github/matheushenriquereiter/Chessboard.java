@@ -8,6 +8,7 @@ public class Chessboard extends JFrame {
     private Square[][] boardSquares;
     private Square selectedSquare;
     private Piece selectedPiece;
+    private Colors playerTurn = Colors.WHITE;
 
     public Chessboard() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -17,10 +18,10 @@ public class Chessboard extends JFrame {
         this.boardSquares = createSquares();
 
         Pawn pawn = new Pawn(Colors.WHITE);
-        Pawn pawn1 = new Pawn(Colors.BLACK);
+        Rook rook = new Rook(Colors.BLACK);
 
         boardSquares[6][1].setPiece(pawn);
-        boardSquares[2][1].setPiece(pawn1);
+        boardSquares[0][0].setPiece(rook);
 
         setVisible(true);
         pack();
@@ -34,21 +35,21 @@ public class Chessboard extends JFrame {
                 Square square = new Square(i, j, null);
 
                 square.addActionListener(_ -> {
-                    if (square.hasPiece()) {
+                    if (square.hasPiece() && playerTurn == square.getPiece().getColor()) {
                         selectedSquare = square;
                         selectedPiece = square.getPiece();
                     }
 
-                    if (!square.hasPiece()) {
-                        if (selectedPiece != null) {
-                            if (isMovementPossible(square, selectedSquare, selectedPiece)) {
-                                square.setPiece(selectedPiece);
-                                selectedSquare.removePiece();
-                            }
 
-                            selectedSquare = null;
-                            selectedPiece = null;
+                    if (!square.hasPiece() && selectedPiece != null) {
+                        if (isMovementPossible(square, selectedSquare, selectedPiece)) {
+                            square.setPiece(selectedPiece);
+                            selectedSquare.removePiece();
+                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
                         }
+
+                        selectedSquare = null;
+                        selectedPiece = null;
                     }
                 });
 
@@ -64,9 +65,6 @@ public class Chessboard extends JFrame {
         List<List<Integer>> movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
 
         for (List<Integer> movement : movements) {
-            System.out.println(movement);
-            System.out.println(square.getXPosition());
-            System.out.println(square.getYPosition());
             if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
                 return true;
             }
