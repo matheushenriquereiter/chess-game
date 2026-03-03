@@ -19,6 +19,13 @@ public class Bishop extends Piece {
         while (Chessboard.positionExists(x + counterX, y + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
+            if (squares[x + counterX][y + counterY].hasPiece()) {
+                coordinates.add(x + counterX);
+                coordinates.add(y + counterY);
+                movements.add(coordinates);
+                break;
+            }
+
             coordinates.add(x + counterX);
             coordinates.add(y + counterY);
 
@@ -32,6 +39,13 @@ public class Bishop extends Piece {
         counterY = 1;
         while (Chessboard.positionExists(x - counterX, y - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
+
+            if (squares[x - counterX][y - counterY].hasPiece()) {
+                coordinates.add(x - counterX);
+                coordinates.add(y - counterY);
+                movements.add(coordinates);
+                break;
+            }
 
             coordinates.add(x - counterX);
             coordinates.add(y - counterY);
@@ -47,6 +61,13 @@ public class Bishop extends Piece {
         while (Chessboard.positionExists(x + counterX, y - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
+            if (squares[x + counterX][y - counterY].hasPiece()) {
+                coordinates.add(x + counterX);
+                coordinates.add(y - counterY);
+                movements.add(coordinates);
+                break;
+            }
+
             coordinates.add(x + counterX);
             coordinates.add(y - counterY);
 
@@ -60,6 +81,13 @@ public class Bishop extends Piece {
         counterY = 1;
         while (Chessboard.positionExists(x - counterX, y + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
+
+            if (squares[x - counterX][y + counterY].hasPiece()) {
+                coordinates.add(x - counterX);
+                coordinates.add(y + counterY);
+                movements.add(coordinates);
+                break;
+            }
 
             coordinates.add(x - counterX);
             coordinates.add(y + counterY);
