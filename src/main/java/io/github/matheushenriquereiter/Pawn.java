@@ -32,6 +32,28 @@ public class Pawn extends Piece {
             movements.add(coordinates);
         }
 
+        if (y != 0) {
+            if (squares[x - 1][y - 1].hasPiece()) {
+                List<Integer> coordinates = new ArrayList<>();
+
+                coordinates.add(x - 1);
+                coordinates.add(y - 1);
+
+                movements.add(coordinates);
+            }
+        }
+
+        if (y != 8) {
+            if (squares[x - 1][y + 1].hasPiece()) {
+                List<Integer> coordinates = new ArrayList<>();
+
+                coordinates.add(x - 1);
+                coordinates.add(y + 1);
+
+                movements.add(coordinates);
+            }
+        }
+
         return movements;
     }
 }
