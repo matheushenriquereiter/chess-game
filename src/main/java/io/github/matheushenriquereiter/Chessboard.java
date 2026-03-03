@@ -38,11 +38,16 @@ public class Chessboard extends JFrame {
                     if (square.hasPiece() && playerTurn == square.getPiece().getColor()) {
                         selectedSquare = square;
                         selectedPiece = square.getPiece();
+                        return;
                     }
 
 
-                    if (!square.hasPiece() && selectedPiece != null) {
+                    if (selectedPiece != null) {
                         if (isMovementPossible(square, selectedSquare, selectedPiece)) {
+                            if (square.hasPiece()) {
+                                square.removePiece();
+                            }
+
                             square.setPiece(selectedPiece);
                             selectedSquare.removePiece();
                             playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;

@@ -18,8 +18,8 @@ public class Rook extends Piece {
             List<Integer> coordinates = new ArrayList<>();
 
             if (squares[i][y].hasPiece()) {
-                coordinates.add(x);
                 coordinates.add(i);
+                coordinates.add(y);
                 movements.add(coordinates);
                 break;
             }
@@ -34,8 +34,8 @@ public class Rook extends Piece {
             List<Integer> coordinates = new ArrayList<>();
 
             if (squares[i][y].hasPiece()) {
-                coordinates.add(x);
                 coordinates.add(i);
+                coordinates.add(y);
                 movements.add(coordinates);
                 break;
             }
