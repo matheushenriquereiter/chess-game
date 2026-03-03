@@ -17,10 +17,12 @@ public class Chessboard extends JFrame {
         this.boardSquares = createSquares();
 
         Pawn pawn = new Pawn(Colors.WHITE);
-        Pawn pawn1 = new Pawn(Colors.BLACK);
+//        Pawn pawn1 = new Pawn(Colors.BLACK);
+        Rook rook = new Rook(Colors.WHITE);
 
         boardSquares[6][1].setPiece(pawn);
-        boardSquares[2][1].setPiece(pawn1);
+//        boardSquares[2][1].setPiece(pawn1);
+        boardSquares[4][4].setPiece(rook);
 
         setVisible(true);
         pack();
@@ -39,16 +41,14 @@ public class Chessboard extends JFrame {
                         selectedPiece = square.getPiece();
                     }
 
-                    if (!square.hasPiece()) {
-                        if (selectedPiece != null) {
-                            if (isMovementPossible(square, selectedSquare, selectedPiece)) {
-                                square.setPiece(selectedPiece);
-                                selectedSquare.removePiece();
-                            }
-
-                            selectedSquare = null;
-                            selectedPiece = null;
+                    if (!square.hasPiece() && selectedPiece != null) {
+                        if (isMovementPossible(square, selectedSquare, selectedPiece)) {
+                            square.setPiece(selectedPiece);
+                            selectedSquare.removePiece();
                         }
+
+                        selectedSquare = null;
+                        selectedPiece = null;
                     }
                 });
 
@@ -63,10 +63,9 @@ public class Chessboard extends JFrame {
     public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
         List<List<Integer>> movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
 
+        System.out.println(movements);
+
         for (List<Integer> movement : movements) {
-            System.out.println(movement);
-            System.out.println(square.getXPosition());
-            System.out.println(square.getYPosition());
             if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
                 return true;
             }
