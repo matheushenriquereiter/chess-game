@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
-    private final List<List<Integer>> movements = new ArrayList<>();
 
     public Rook(PieceColor color) {
         super(color);
@@ -14,88 +13,45 @@ public class Rook extends Piece {
 
     @Override
     public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
-        movements.clear();
+        List<List<Integer>> legalMovements = new ArrayList<>();
 
-        for (int i = row - 1; i > -1; i--) {
-            List<Integer> coordinates = new ArrayList<>();
+        addDirectionalMovements(row, column, -1, 0, legalMovements, squares);
+        addDirectionalMovements(row, column, 1, 0, legalMovements, squares);
+        addDirectionalMovements(row, column, 0, -1, legalMovements, squares);
+        addDirectionalMovements(row, column, 0, 1, legalMovements, squares);
 
-            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
+        return legalMovements;
+    }
+
+    public void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares) {
+        int r = row + rowDelta;
+        int c = column + columnDelta;
+
+        while (r >= 0 && r <= 7 && c >= 0 && c <= 7) {
+            boolean hasPiece = addMovement(r, c, legalMovements, squares);
+
+            if (hasPiece) {
                 break;
             }
 
-            if (squares[i][column].hasPiece()) {
-                coordinates.add(i);
-                coordinates.add(column);
-                movements.add(coordinates);
-                break;
-            }
+            r += rowDelta;
+            c += columnDelta;
+        }
+    }
 
-            coordinates.add(i);
-            coordinates.add(column);
+    public boolean addMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+        Square square = squares[row][column];
 
-            movements.add(coordinates);
+        if (square.hasPiece() && square.getPiece().getColor() == getColor()) {
+            return true;
         }
 
-        for (int i = row + 1; i < 8; i++) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
-                break;
-            }
-
-            if (squares[i][column].hasPiece()) {
-                coordinates.add(i);
-                coordinates.add(column);
-                movements.add(coordinates);
-                break;
-            }
-
-            coordinates.add(i);
-            coordinates.add(column);
-
-            movements.add(coordinates);
+        if (square.hasPiece()) {
+            addLegalMovement(row, column, legalMovements);
+            return true;
         }
 
-        for (int i = column - 1; i > -1; i--) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
-                break;
-            }
-
-            if (squares[row][i].hasPiece()) {
-                coordinates.add(row);
-                coordinates.add(i);
-                movements.add(coordinates);
-                break;
-            }
-
-            coordinates.add(row);
-            coordinates.add(i);
-
-            movements.add(coordinates);
-        }
-
-        for (int i = column + 1; i < 8; i++) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
-                break;
-            }
-
-            if (squares[row][i].hasPiece()) {
-                coordinates.add(row);
-                coordinates.add(i);
-                movements.add(coordinates);
-                break;
-            }
-
-            coordinates.add(row);
-            coordinates.add(i);
-
-            movements.add(coordinates);
-        }
-
-        return movements;
+        addLegalMovement(row, column, legalMovements);
+        return false;
     }
 }

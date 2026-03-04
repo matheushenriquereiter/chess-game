@@ -17,15 +17,13 @@ public class Pawn extends Piece {
     public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         List<List<Integer>> legalMovements = new ArrayList<>();
 
-        addVerticalMovements(row, column, legalMovements);
-        addDiagonalCaptureMovement(row, column, legalMovements);
+        addVerticalMovements(row, column, legalMovements, squares);
+        addDiagonalCaptureMovement(row, column, legalMovements, squares);
 
         return legalMovements;
     }
 
-    private void addVerticalMovements(int row, int column, List<List<Integer>> legalMovements) {
-        Square[][] squares = Chessboard.getBoardSquares();
-
+    private void addVerticalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
         for (int i = row + movementDirection; i != row + (isFirstMove ? 3 : 2) * movementDirection; i += movementDirection) {
             if (squares[i][column].hasPiece()) {
                 break;
@@ -35,9 +33,7 @@ public class Pawn extends Piece {
         }
     }
 
-    private void addDiagonalCaptureMovement(int row, int column, List<List<Integer>> legalMovements) {
-        Square[][] squares = Chessboard.getBoardSquares();
-
+    private void addDiagonalCaptureMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
         if (column != 0) {
             Square leftDiagonalSquare = squares[row + movementDirection][column - 1];
 
@@ -53,15 +49,6 @@ public class Pawn extends Piece {
                 addLegalMovement(row + movementDirection, column + 1, legalMovements);
             }
         }
-    }
-
-    public void addLegalMovement(int row, int column, List<List<Integer>> legalMovements) {
-        List<Integer> movement = new ArrayList<>();
-
-        movement.add(row);
-        movement.add(column);
-
-        legalMovements.add(movement);
     }
 
     public void setIsFirstMove(boolean isFirstMove) {
