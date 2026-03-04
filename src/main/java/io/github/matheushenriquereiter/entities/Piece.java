@@ -26,12 +26,44 @@ public abstract class Piece {
 
     public abstract List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares);
 
-    public void addLegalMovement(int row, int column, List<List<Integer>> legalMovements) {
+    public void insertLegalMovement(int row, int column, List<List<Integer>> legalMovements) {
         List<Integer> legalMovement = new ArrayList<>();
 
         legalMovement.add(row);
         legalMovement.add(column);
 
         legalMovements.add(legalMovement);
+    }
+
+    public boolean addLegalMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+        Square square = squares[row][column];
+
+        if (square.hasPiece() && square.getPiece().getColor() == getColor()) {
+            return true;
+        }
+
+        if (square.hasPiece()) {
+            insertLegalMovement(row, column, legalMovements);
+            return true;
+        }
+
+        insertLegalMovement(row, column, legalMovements);
+        return false;
+    }
+
+    public void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares) {
+        int r = row + rowDelta;
+        int c = column + columnDelta;
+
+        while (r >= 0 && r <= 7 && c >= 0 && c <= 7) {
+            boolean squareHasPiece = addLegalMovement(r, c, legalMovements, squares);
+
+            if (squareHasPiece) {
+                break;
+            }
+
+            r += rowDelta;
+            c += columnDelta;
+        }
     }
 }
