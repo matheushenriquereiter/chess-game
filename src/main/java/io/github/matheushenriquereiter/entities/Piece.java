@@ -22,5 +22,5 @@ public abstract class Piece {
         return "src/main/resources/piece-icons/%s-%s.png".formatted(pieceColor, pieceName);
     }
 
-    public abstract List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares);
+    public abstract List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares);
 }

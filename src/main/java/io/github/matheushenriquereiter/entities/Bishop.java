@@ -13,23 +13,23 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         movements.clear();
 
         int counterX = 1;
         int counterY = 1;
-        while (Chessboard.positionExists(x + counterX, y + counterY)) {
+        while (Chessboard.positionExists(row + counterX, column + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x + counterX][y + counterY].hasPiece()) {
-                coordinates.add(x + counterX);
-                coordinates.add(y + counterY);
+            if (squares[row + counterX][column + counterY].hasPiece()) {
+                coordinates.add(row + counterX);
+                coordinates.add(column + counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x + counterX);
-            coordinates.add(y + counterY);
+            coordinates.add(row + counterX);
+            coordinates.add(column + counterY);
 
             movements.add(coordinates);
 
@@ -39,18 +39,18 @@ public class Bishop extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x - counterX, y - counterY)) {
+        while (Chessboard.positionExists(row - counterX, column - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x - counterX][y - counterY].hasPiece()) {
-                coordinates.add(x - counterX);
-                coordinates.add(y - counterY);
+            if (squares[row - counterX][column - counterY].hasPiece()) {
+                coordinates.add(row - counterX);
+                coordinates.add(column - counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x - counterX);
-            coordinates.add(y - counterY);
+            coordinates.add(row - counterX);
+            coordinates.add(column - counterY);
 
             movements.add(coordinates);
 
@@ -60,18 +60,18 @@ public class Bishop extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x + counterX, y - counterY)) {
+        while (Chessboard.positionExists(row + counterX, column - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x + counterX][y - counterY].hasPiece()) {
-                coordinates.add(x + counterX);
-                coordinates.add(y - counterY);
+            if (squares[row + counterX][column - counterY].hasPiece()) {
+                coordinates.add(row + counterX);
+                coordinates.add(column - counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x + counterX);
-            coordinates.add(y - counterY);
+            coordinates.add(row + counterX);
+            coordinates.add(column - counterY);
 
             movements.add(coordinates);
 
@@ -81,18 +81,18 @@ public class Bishop extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x - counterX, y + counterY)) {
+        while (Chessboard.positionExists(row - counterX, column + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x - counterX][y + counterY].hasPiece()) {
-                coordinates.add(x - counterX);
-                coordinates.add(y + counterY);
+            if (squares[row - counterX][column + counterY].hasPiece()) {
+                coordinates.add(row - counterX);
+                coordinates.add(column + counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x - counterX);
-            coordinates.add(y + counterY);
+            coordinates.add(row - counterX);
+            coordinates.add(column + counterY);
 
             movements.add(coordinates);
 

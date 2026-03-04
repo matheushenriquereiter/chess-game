@@ -13,149 +13,149 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         movements.clear();
 
-        for (int i = x - 1; i > x - 3; i--) {
+        for (int i = row - 1; i > row - 3; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (!Chessboard.positionExists(i, y)) {
+            if (!Chessboard.positionExists(i, column)) {
                 continue;
             }
 
-            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
                 continue;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x - 2, y - 1)) {
+        if (Chessboard.positionExists(row - 2, column - 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (!(squares[x - 2][y - 1].hasPiece() && squares[x - 2][y - 1].getPiece().getColor() == getColor())) {
-                coordinates.add(x - 2);
-                coordinates.add(y - 1);
+            if (!(squares[row - 2][column - 1].hasPiece() && squares[row - 2][column - 1].getPiece().getColor() == getColor())) {
+                coordinates.add(row - 2);
+                coordinates.add(column - 1);
 
                 movements.add(coordinates);
             }
         }
 
-        if (Chessboard.positionExists(x - 2, y + 1)) {
+        if (Chessboard.positionExists(row - 2, column + 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (!(squares[x - 2][y + 1].hasPiece() && squares[x - 2][y + 1].getPiece().getColor() == getColor())) {
-                coordinates.add(x - 2);
-                coordinates.add(y + 1);
+            if (!(squares[row - 2][column + 1].hasPiece() && squares[row - 2][column + 1].getPiece().getColor() == getColor())) {
+                coordinates.add(row - 2);
+                coordinates.add(column + 1);
 
                 movements.add(coordinates);
             }
         }
 
-        for (int i = x + 1; i < x + 3; i++) {
+        for (int i = row + 1; i < row + 3; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (!Chessboard.positionExists(i, y)) {
+            if (!Chessboard.positionExists(i, column)) {
                 continue;
             }
 
-            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
                 continue;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x + 2, y - 1)) {
+        if (Chessboard.positionExists(row + 2, column - 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 2);
-            coordinates.add(y - 1);
+            coordinates.add(row + 2);
+            coordinates.add(column - 1);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x + 2, y + 1)) {
+        if (Chessboard.positionExists(row + 2, column + 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 2);
-            coordinates.add(y + 1);
+            coordinates.add(row + 2);
+            coordinates.add(column + 1);
 
             movements.add(coordinates);
         }
 
-        for (int i = y + 1; i < y + 3; i++) {
+        for (int i = column + 1; i < column + 3; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (!Chessboard.positionExists(x, i)) {
+            if (!Chessboard.positionExists(row, i)) {
                 continue;
             }
 
-            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
+            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
                 continue;
             }
 
-            coordinates.add(x);
-            coordinates.add(i);
-
-            movements.add(coordinates);
-        }
-
-        if (Chessboard.positionExists(x + 1, y + 2)) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            coordinates.add(x + 1);
-            coordinates.add(y + 2);
-
-            movements.add(coordinates);
-        }
-
-        if (Chessboard.positionExists(x - 1, y + 2)) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            coordinates.add(x - 1);
-            coordinates.add(y + 2);
-
-            movements.add(coordinates);
-        }
-
-        for (int i = y - 1; i > y - 3; i--) {
-            List<Integer> coordinates = new ArrayList<>();
-
-            if (!Chessboard.positionExists(x, i)) {
-                continue;
-            }
-
-            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
-                continue;
-            }
-
-            coordinates.add(x);
+            coordinates.add(row);
             coordinates.add(i);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x + 1, y - 2)) {
+        if (Chessboard.positionExists(row + 1, column + 2)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 1);
-            coordinates.add(y - 2);
+            coordinates.add(row + 1);
+            coordinates.add(column + 2);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x - 1, y - 2)) {
+        if (Chessboard.positionExists(row - 1, column + 2)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x - 1);
-            coordinates.add(y - 2);
+            coordinates.add(row - 1);
+            coordinates.add(column + 2);
+
+            movements.add(coordinates);
+        }
+
+        for (int i = column - 1; i > column - 3; i--) {
+            List<Integer> coordinates = new ArrayList<>();
+
+            if (!Chessboard.positionExists(row, i)) {
+                continue;
+            }
+
+            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
+                continue;
+            }
+
+            coordinates.add(row);
+            coordinates.add(i);
+
+            movements.add(coordinates);
+        }
+
+        if (Chessboard.positionExists(row + 1, column - 2)) {
+            List<Integer> coordinates = new ArrayList<>();
+
+            coordinates.add(row + 1);
+            coordinates.add(column - 2);
+
+            movements.add(coordinates);
+        }
+
+        if (Chessboard.positionExists(row - 1, column - 2)) {
+            List<Integer> coordinates = new ArrayList<>();
+
+            coordinates.add(row - 1);
+            coordinates.add(column - 2);
 
             movements.add(coordinates);
         }

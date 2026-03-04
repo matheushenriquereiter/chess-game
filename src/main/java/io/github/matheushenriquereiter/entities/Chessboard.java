@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Chessboard extends JFrame {
     private static Square[][] boardSquares;
-    private final King blackKing;
     private PieceColor playerTurn = PieceColor.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
@@ -21,8 +20,6 @@ public class Chessboard extends JFrame {
 
         Piece[][] whitePieces = generatePieces(PieceColor.BLACK);
         Piece[][] blackPieces = generatePieces(PieceColor.WHITE);
-
-        blackKing = (King) blackPieces[0][4];
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 8; j++) {
@@ -53,7 +50,7 @@ public class Chessboard extends JFrame {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Square square = new Square(i, j, null);
+                Square square = new Square(i, j);
 
                 square.addActionListener(_ -> {
                     if (square.hasPiece() && playerTurn == square.getPiece().getColor()) {
@@ -91,10 +88,10 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> movements = selectedPiece.getLegalMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
+        List<List<Integer>> movements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), boardSquares);
 
         for (List<Integer> movement : movements) {
-            if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
+            if (square.getRow() == movement.get(0) && square.getColumn() == movement.get(1)) {
                 return true;
             }
         }

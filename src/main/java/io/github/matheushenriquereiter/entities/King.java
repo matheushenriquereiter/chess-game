@@ -13,74 +13,74 @@ public class King extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         movements.clear();
 
-        if (y != 0) {
+        if (column != 0) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x);
-            coordinates.add(y - 1);
+            coordinates.add(row);
+            coordinates.add(column - 1);
 
             movements.add(coordinates);
         }
 
-        if (y != 7) {
+        if (column != 7) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x);
-            coordinates.add(y + 1);
+            coordinates.add(row);
+            coordinates.add(column + 1);
 
             movements.add(coordinates);
         }
 
-        if (x != 0) {
+        if (row != 0) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x - 1);
-            coordinates.add(y);
+            coordinates.add(row - 1);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        if (x != 7) {
+        if (row != 7) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 1);
-            coordinates.add(y);
+            coordinates.add(row + 1);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x + 1, y + 1)) {
+        if (Chessboard.positionExists(row + 1, column + 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 1);
-            coordinates.add(y + 1);
+            coordinates.add(row + 1);
+            coordinates.add(column + 1);
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x - 1, y - 1)) {
+        if (Chessboard.positionExists(row - 1, column - 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x - 1);
-            coordinates.add(y - 1);
+            coordinates.add(row - 1);
+            coordinates.add(column - 1);
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x + 1, y - 1)) {
+        if (Chessboard.positionExists(row + 1, column - 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x + 1);
-            coordinates.add(y - 1);
+            coordinates.add(row + 1);
+            coordinates.add(column - 1);
             movements.add(coordinates);
         }
 
-        if (Chessboard.positionExists(x - 1, y + 1)) {
+        if (Chessboard.positionExists(row - 1, column + 1)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            coordinates.add(x - 1);
-            coordinates.add(y + 1);
+            coordinates.add(row - 1);
+            coordinates.add(column + 1);
 
             movements.add(coordinates);
         }
@@ -94,7 +94,7 @@ public class King extends Piece {
         for (Square[] rows : boardSquares) {
             for (Square square : rows) {
                 if (square.hasPiece() && square.getPiece().getColor() == PieceColor.WHITE) {
-                    List<List<Integer>> rivalPossibleMovements = square.getPiece().getLegalMovements(square.getXPosition(), square.getYPosition(), boardSquares);
+                    List<List<Integer>> rivalPossibleMovements = square.getPiece().getLegalMovements(square.getRow(), square.getColumn(), boardSquares);
                 }
             }
         }

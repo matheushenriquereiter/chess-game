@@ -13,68 +13,68 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         movements.clear();
 
-        for (int i = x - 1; i > -1; i--) {
+        for (int i = row - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[i][y].hasPiece()) {
+            if (squares[i][column].hasPiece()) {
                 coordinates.add(i);
-                coordinates.add(y);
+                coordinates.add(column);
                 movements.add(coordinates);
                 break;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        for (int i = x + 1; i < 8; i++) {
+        for (int i = row + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[i][y].hasPiece()) {
+            if (squares[i][column].hasPiece()) {
                 coordinates.add(i);
-                coordinates.add(y);
+                coordinates.add(column);
                 movements.add(coordinates);
                 break;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        for (int i = y - 1; i > -1; i--) {
+        for (int i = column - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x][i].hasPiece()) {
-                coordinates.add(x);
+            if (squares[row][i].hasPiece()) {
+                coordinates.add(row);
                 coordinates.add(i);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x);
+            coordinates.add(row);
             coordinates.add(i);
 
             movements.add(coordinates);
         }
 
-        for (int i = y + 1; i < 8; i++) {
+        for (int i = column + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x][i].hasPiece()) {
-                coordinates.add(x);
+            if (squares[row][i].hasPiece()) {
+                coordinates.add(row);
                 coordinates.add(i);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x);
+            coordinates.add(row);
             coordinates.add(i);
 
             movements.add(coordinates);
@@ -82,18 +82,18 @@ public class Queen extends Piece {
 
         int counterX = 1;
         int counterY = 1;
-        while (Chessboard.positionExists(x + counterX, y + counterY)) {
+        while (Chessboard.positionExists(row + counterX, column + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x + counterX][y + counterY].hasPiece()) {
-                coordinates.add(x + counterX);
-                coordinates.add(y + counterY);
+            if (squares[row + counterX][column + counterY].hasPiece()) {
+                coordinates.add(row + counterX);
+                coordinates.add(column + counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x + counterX);
-            coordinates.add(y + counterY);
+            coordinates.add(row + counterX);
+            coordinates.add(column + counterY);
 
             movements.add(coordinates);
 
@@ -103,18 +103,18 @@ public class Queen extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x - counterX, y - counterY)) {
+        while (Chessboard.positionExists(row - counterX, column - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x - counterX][y - counterY].hasPiece()) {
-                coordinates.add(x - counterX);
-                coordinates.add(y - counterY);
+            if (squares[row - counterX][column - counterY].hasPiece()) {
+                coordinates.add(row - counterX);
+                coordinates.add(column - counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x - counterX);
-            coordinates.add(y - counterY);
+            coordinates.add(row - counterX);
+            coordinates.add(column - counterY);
 
             movements.add(coordinates);
 
@@ -124,18 +124,18 @@ public class Queen extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x + counterX, y - counterY)) {
+        while (Chessboard.positionExists(row + counterX, column - counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x + counterX][y - counterY].hasPiece()) {
-                coordinates.add(x + counterX);
-                coordinates.add(y - counterY);
+            if (squares[row + counterX][column - counterY].hasPiece()) {
+                coordinates.add(row + counterX);
+                coordinates.add(column - counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x + counterX);
-            coordinates.add(y - counterY);
+            coordinates.add(row + counterX);
+            coordinates.add(column - counterY);
 
             movements.add(coordinates);
 
@@ -145,18 +145,18 @@ public class Queen extends Piece {
 
         counterX = 1;
         counterY = 1;
-        while (Chessboard.positionExists(x - counterX, y + counterY)) {
+        while (Chessboard.positionExists(row - counterX, column + counterY)) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x - counterX][y + counterY].hasPiece()) {
-                coordinates.add(x - counterX);
-                coordinates.add(y + counterY);
+            if (squares[row - counterX][column + counterY].hasPiece()) {
+                coordinates.add(row - counterX);
+                coordinates.add(column + counterY);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x - counterX);
-            coordinates.add(y + counterY);
+            coordinates.add(row - counterX);
+            coordinates.add(column + counterY);
 
             movements.add(coordinates);
 

@@ -1,34 +1,31 @@
 package io.github.matheushenriquereiter.entities;
 
+import io.github.matheushenriquereiter.enums.SquareColor;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Square extends JButton {
-    private final int xPosition;
-    private final int yPosition;
-    private Piece piece;
+    private final int row;
+    private final int column;
+    private Piece piece = null;
 
-    public Square(int xPosition, int yPosition, Piece piece) {
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.piece = piece;
-        setBackground(getSquareColor());
-
+    public Square(int row, int column) {
         setPreferredSize(new Dimension(100, 100));
         setBorderPainted(false);
+
+        this.row = row;
+        this.column = column;
+
+        setBackground(getSquareColor());
     }
 
-    public int getXPosition() {
-        return xPosition;
+    public int getRow() {
+        return row;
     }
 
-    public int getYPosition() {
-        return yPosition;
-    }
-
-    public void removePiece() {
-        this.piece = null;
-        setIcon(null);
+    public int getColumn() {
+        return column;
     }
 
     public Piece getPiece() {
@@ -39,16 +36,21 @@ public class Square extends JButton {
         this.piece = piece;
 
         Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-        ImageIcon icon = new ImageIcon(scaledImage);
-        setIcon(icon);
+        setIcon(new ImageIcon(scaledImage));
+    }
+
+    public void removePiece() {
+        this.piece = null;
+
+        setIcon(null);
     }
 
     public Color getSquareColor() {
-        if ((xPosition + yPosition) % 2 == 0) {
-            return new Color(0xE8EDF9);
+        if ((row + column) % 2 == 0) {
+            return new Color(SquareColor.LIGHT.getColor());
         }
 
-        return new Color(0xB7C0D8);
+        return new Color(SquareColor.BLACK.getColor());
     }
 
     public boolean hasPiece() {

@@ -13,84 +13,84 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         movements.clear();
 
-        for (int i = x - 1; i > -1; i--) {
+        for (int i = row - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
                 break;
             }
 
-            if (squares[i][y].hasPiece()) {
+            if (squares[i][column].hasPiece()) {
                 coordinates.add(i);
-                coordinates.add(y);
+                coordinates.add(column);
                 movements.add(coordinates);
                 break;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        for (int i = x + 1; i < 8; i++) {
+        for (int i = row + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+            if (squares[i][column].hasPiece() && squares[i][column].getPiece().getColor() == getColor()) {
                 break;
             }
 
-            if (squares[i][y].hasPiece()) {
+            if (squares[i][column].hasPiece()) {
                 coordinates.add(i);
-                coordinates.add(y);
+                coordinates.add(column);
                 movements.add(coordinates);
                 break;
             }
 
             coordinates.add(i);
-            coordinates.add(y);
+            coordinates.add(column);
 
             movements.add(coordinates);
         }
 
-        for (int i = y - 1; i > -1; i--) {
+        for (int i = column - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
+            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
                 break;
             }
 
-            if (squares[x][i].hasPiece()) {
-                coordinates.add(x);
+            if (squares[row][i].hasPiece()) {
+                coordinates.add(row);
                 coordinates.add(i);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x);
+            coordinates.add(row);
             coordinates.add(i);
 
             movements.add(coordinates);
         }
 
-        for (int i = y + 1; i < 8; i++) {
+        for (int i = column + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
-            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
+            if (squares[row][i].hasPiece() && squares[row][i].getPiece().getColor() == getColor()) {
                 break;
             }
 
-            if (squares[x][i].hasPiece()) {
-                coordinates.add(x);
+            if (squares[row][i].hasPiece()) {
+                coordinates.add(row);
                 coordinates.add(i);
                 movements.add(coordinates);
                 break;
             }
 
-            coordinates.add(x);
+            coordinates.add(row);
             coordinates.add(i);
 
             movements.add(coordinates);
