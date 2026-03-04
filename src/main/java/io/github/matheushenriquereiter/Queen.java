@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Queen extends Piece {
     private final List<List<Integer>> movements = new ArrayList<>();
-    private boolean firstMove = true;
 
     public Queen(Colors color) {
         super(color);

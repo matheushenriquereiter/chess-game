@@ -20,6 +20,7 @@ public class Chessboard extends JFrame {
         Pawn pawn1 = new Pawn(Colors.WHITE);
         Bishop bishop = new Bishop(Colors.WHITE);
         Queen queen = new Queen(Colors.WHITE);
+        King king = new King(Colors.WHITE);
 
         Rook rook = new Rook(Colors.BLACK);
 
@@ -28,6 +29,7 @@ public class Chessboard extends JFrame {
         boardSquares[0][0].setPiece(rook);
         boardSquares[4][4].setPiece(bishop);
         boardSquares[3][3].setPiece(queen);
+        boardSquares[2][2].setPiece(king);
 
         setVisible(true);
         pack();
