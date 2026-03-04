@@ -1,4 +1,4 @@
-package io.github.matheushenriquereiter;
+package io.github.matheushenriquereiter.entities;
 
 import javax.swing.*;
 import java.awt.*;

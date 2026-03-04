@@ -1,4 +1,6 @@
-package io.github.matheushenriquereiter;
+package io.github.matheushenriquereiter.entities;
+
+import io.github.matheushenriquereiter.enums.PieceColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +8,8 @@ import java.util.List;
 
 public class Chessboard extends JFrame {
     private static Square[][] boardSquares;
-    private Colors playerTurn = Colors.WHITE;
+    private final King blackKing;
+    private PieceColor playerTurn = PieceColor.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
 
@@ -16,20 +19,21 @@ public class Chessboard extends JFrame {
         setLayout(new GridLayout(8, 8));
         boardSquares = createSquares();
 
-        Piece[] blackPieces = generatePieces(Colors.BLACK);
-        Piece[] whitePieces = generatePieces(Colors.WHITE);
+        Piece[][] whitePieces = generatePieces(PieceColor.BLACK);
+        Piece[][] blackPieces = generatePieces(PieceColor.WHITE);
 
-        for (int i = 0; i < blackPieces.length; i++) {
-            boardSquares[0][i].setPiece(blackPieces[i]);
+        blackKing = (King) blackPieces[0][4];
 
-            Pawn pawn = new Pawn(Colors.BLACK);
-            boardSquares[1][i].setPiece(pawn);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 8; j++) {
+                boardSquares[i][j].setPiece(whitePieces[i][j]);
+            }
         }
 
-        for (int i = 7; i >= 0; i--) {
-            boardSquares[7][i].setPiece(whitePieces[i]);
-            Pawn pawn = new Pawn(Colors.WHITE);
-            boardSquares[6][i].setPiece(pawn);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 7; j >= 0; j--) {
+                boardSquares[boardSquares[0].length - i - 1][j].setPiece(blackPieces[i][j]);
+            }
         }
 
         setVisible(true);
@@ -38,6 +42,10 @@ public class Chessboard extends JFrame {
 
     public static boolean positionExists(int x, int y) {
         return x >= 0 && x < boardSquares[0].length && y >= 0 && y < boardSquares[0].length;
+    }
+
+    public static Square[][] getBoardSquares() {
+        return boardSquares;
     }
 
     public Square[][] createSquares() {
@@ -56,13 +64,17 @@ public class Chessboard extends JFrame {
 
                     if (selectedPiece != null) {
                         if (isMovementPossible(square, selectedSquare, selectedPiece)) {
+                            if (selectedPiece instanceof Pawn pawn) {
+                                pawn.setIsFirstMove(false);
+                            }
+
                             if (square.hasPiece()) {
                                 square.removePiece();
                             }
 
                             square.setPiece(selectedPiece);
                             selectedSquare.removePiece();
-                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+                            playerTurn = playerTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
                         }
 
                         selectedSquare = null;
@@ -79,7 +91,7 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
+        List<List<Integer>> movements = selectedPiece.getLegalMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
 
         for (List<Integer> movement : movements) {
             if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
@@ -90,7 +102,7 @@ public class Chessboard extends JFrame {
         return false;
     }
 
-    public Piece[] generatePieces(Colors color) {
-        return new Piece[]{new Rook(color), new Knight(color), new Bishop(color), new Queen(color), new King(color), new Bishop(color), new Knight(color), new Rook(color)};
+    public Piece[][] generatePieces(PieceColor color) {
+        return new Piece[][]{{new Rook(color), new Knight(color), new Bishop(color), new Queen(color), new King(color), new Bishop(color), new Knight(color), new Rook(color)}, {new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color)}};
     }
 }

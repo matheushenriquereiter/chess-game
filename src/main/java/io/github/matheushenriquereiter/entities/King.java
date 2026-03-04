@@ -1,4 +1,6 @@
-package io.github.matheushenriquereiter;
+package io.github.matheushenriquereiter.entities;
+
+import io.github.matheushenriquereiter.enums.PieceColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +8,12 @@ import java.util.List;
 public class King extends Piece {
     private final List<List<Integer>> movements = new ArrayList<>();
 
-    public King(Colors color) {
+    public King(PieceColor color) {
         super(color);
     }
 
     @Override
-    public List<List<Integer>> getMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
         movements.clear();
 
         if (y != 0) {
@@ -84,5 +86,19 @@ public class King extends Piece {
         }
 
         return movements;
+    }
+
+    public boolean inCheck() {
+        Square[][] boardSquares = Chessboard.getBoardSquares();
+
+        for (Square[] rows : boardSquares) {
+            for (Square square : rows) {
+                if (square.hasPiece() && square.getPiece().getColor() == PieceColor.WHITE) {
+                    List<List<Integer>> rivalPossibleMovements = square.getPiece().getLegalMovements(square.getXPosition(), square.getYPosition(), boardSquares);
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -1,4 +1,6 @@
-package io.github.matheushenriquereiter;
+package io.github.matheushenriquereiter.entities;
+
+import io.github.matheushenriquereiter.enums.PieceColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +8,20 @@ import java.util.List;
 public class Rook extends Piece {
     private final List<List<Integer>> movements = new ArrayList<>();
 
-    public Rook(Colors color) {
+    public Rook(PieceColor color) {
         super(color);
     }
 
     @Override
-    public List<List<Integer>> getMovements(int x, int y, Square[][] squares) {
+    public List<List<Integer>> getLegalMovements(int x, int y, Square[][] squares) {
         movements.clear();
 
         for (int i = x - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
+
+            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+                break;
+            }
 
             if (squares[i][y].hasPiece()) {
                 coordinates.add(i);
@@ -33,6 +39,10 @@ public class Rook extends Piece {
         for (int i = x + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
 
+            if (squares[i][y].hasPiece() && squares[i][y].getPiece().getColor() == getColor()) {
+                break;
+            }
+
             if (squares[i][y].hasPiece()) {
                 coordinates.add(i);
                 coordinates.add(y);
@@ -49,6 +59,10 @@ public class Rook extends Piece {
         for (int i = y - 1; i > -1; i--) {
             List<Integer> coordinates = new ArrayList<>();
 
+            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
+                break;
+            }
+
             if (squares[x][i].hasPiece()) {
                 coordinates.add(x);
                 coordinates.add(i);
@@ -64,6 +78,10 @@ public class Rook extends Piece {
 
         for (int i = y + 1; i < 8; i++) {
             List<Integer> coordinates = new ArrayList<>();
+
+            if (squares[x][i].hasPiece() && squares[x][i].getPiece().getColor() == getColor()) {
+                break;
+            }
 
             if (squares[x][i].hasPiece()) {
                 coordinates.add(x);
