@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Chessboard extends JFrame {
     private static Square[][] boardSquares;
-    private final Colors playerTurn = Colors.WHITE;
+    private Colors playerTurn = Colors.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
 
@@ -16,23 +16,21 @@ public class Chessboard extends JFrame {
         setLayout(new GridLayout(8, 8));
         boardSquares = createSquares();
 
-        Pawn pawn = new Pawn(Colors.WHITE);
-        Pawn pawn1 = new Pawn(Colors.WHITE);
-        Bishop bishop = new Bishop(Colors.WHITE);
-        Queen queen = new Queen(Colors.WHITE);
-        King king = new King(Colors.WHITE);
-        Knight knight = new Knight(Colors.WHITE);
+        Piece[] blackPieces = generatePieces(Colors.BLACK);
+        Piece[] whitePieces = generatePieces(Colors.WHITE);
 
-        Rook rook = new Rook(Colors.BLACK);
+        for (int i = 0; i < blackPieces.length; i++) {
+            boardSquares[0][i].setPiece(blackPieces[i]);
 
-        boardSquares[6][1].setPiece(pawn);
-        boardSquares[6][0].setPiece(pawn);
-        boardSquares[0][0].setPiece(rook);
-        boardSquares[4][4].setPiece(bishop);
-        boardSquares[3][3].setPiece(queen);
-        boardSquares[2][2].setPiece(king);
+            Pawn pawn = new Pawn(Colors.BLACK);
+            boardSquares[1][i].setPiece(pawn);
+        }
 
-        boardSquares[6][6].setPiece(knight);
+        for (int i = 7; i >= 0; i--) {
+            boardSquares[7][i].setPiece(whitePieces[i]);
+            Pawn pawn = new Pawn(Colors.WHITE);
+            boardSquares[6][i].setPiece(pawn);
+        }
 
         setVisible(true);
         pack();
@@ -64,7 +62,7 @@ public class Chessboard extends JFrame {
 
                             square.setPiece(selectedPiece);
                             selectedSquare.removePiece();
-//                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+                            playerTurn = playerTurn == Colors.WHITE ? Colors.BLACK : Colors.WHITE;
                         }
 
                         selectedSquare = null;
@@ -83,8 +81,6 @@ public class Chessboard extends JFrame {
     public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
         List<List<Integer>> movements = selectedPiece.getMovements(selectedSquare.getXPosition(), selectedSquare.getYPosition(), boardSquares);
 
-        System.out.println(movements);
-
         for (List<Integer> movement : movements) {
             if (square.getXPosition() == movement.get(0) && square.getYPosition() == movement.get(1)) {
                 return true;
@@ -92,5 +88,9 @@ public class Chessboard extends JFrame {
         }
 
         return false;
+    }
+
+    public Piece[] generatePieces(Colors color) {
+        return new Piece[]{new Rook(color), new Knight(color), new Bishop(color), new Queen(color), new King(color), new Bishop(color), new Knight(color), new Rook(color)};
     }
 }
