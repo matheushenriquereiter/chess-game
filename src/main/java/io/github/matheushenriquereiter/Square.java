@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Square extends JButton {
-    private int xPosition;
-    private int yPosition;
+    private final int xPosition;
+    private final int yPosition;
     private Piece piece;
 
     public Square(int xPosition, int yPosition, Piece piece) {
@@ -26,14 +26,6 @@ public class Square extends JButton {
         return yPosition;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-
-        Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-        ImageIcon icon = new ImageIcon(scaledImage);
-        setIcon(icon);
-    }
-
     public void removePiece() {
         this.piece = null;
         setIcon(null);
@@ -41,6 +33,14 @@ public class Square extends JButton {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+
+        Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);
+        setIcon(icon);
     }
 
     public Color getSquareColor() {

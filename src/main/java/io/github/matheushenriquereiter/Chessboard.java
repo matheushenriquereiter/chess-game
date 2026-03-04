@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Chessboard extends JFrame {
     private static Square[][] boardSquares;
+    private final Colors playerTurn = Colors.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
-    private Colors playerTurn = Colors.WHITE;
 
     public Chessboard() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -21,6 +21,7 @@ public class Chessboard extends JFrame {
         Bishop bishop = new Bishop(Colors.WHITE);
         Queen queen = new Queen(Colors.WHITE);
         King king = new King(Colors.WHITE);
+        Knight knight = new Knight(Colors.WHITE);
 
         Rook rook = new Rook(Colors.BLACK);
 
@@ -31,8 +32,14 @@ public class Chessboard extends JFrame {
         boardSquares[3][3].setPiece(queen);
         boardSquares[2][2].setPiece(king);
 
+        boardSquares[6][6].setPiece(knight);
+
         setVisible(true);
         pack();
+    }
+
+    public static boolean positionExists(int x, int y) {
+        return x >= 0 && x < boardSquares[0].length && y >= 0 && y < boardSquares[0].length;
     }
 
     public Square[][] createSquares() {
@@ -85,9 +92,5 @@ public class Chessboard extends JFrame {
         }
 
         return false;
-    }
-
-    public static boolean positionExists(int x, int y) {
-        return x >= 0 && x < boardSquares[0].length && y >= 0 && y < boardSquares[0].length;
     }
 }
