@@ -14,7 +14,7 @@ public class Rook extends Piece {
     public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         List<List<Integer>> legalMovements = new ArrayList<>();
 
-        addOrthogonalMovements(row, column, legalMovements, squares);
+        addOrthogonalMovements(row, column, legalMovements, squares, null);
 
         return legalMovements;
     }

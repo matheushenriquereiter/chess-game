@@ -51,33 +51,39 @@ public abstract class Piece {
         return false;
     }
 
-    public void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares) {
+    public void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares, Integer movementLimit) {
         int r = row + rowDelta;
         int c = column + columnDelta;
+        int counter = 0;
 
         while (r >= 0 && r <= 7 && c >= 0 && c <= 7) {
-            boolean squareHasPiece = addLegalMovement(r, c, legalMovements, squares);
+            boolean reachedMovementLimit = (movementLimit != null) && (counter == movementLimit);
+            if (reachedMovementLimit) {
+                break;
+            }
 
+            boolean squareHasPiece = addLegalMovement(r, c, legalMovements, squares);
             if (squareHasPiece) {
                 break;
             }
 
             r += rowDelta;
             c += columnDelta;
+            counter++;
         }
     }
 
-    public void addOrthogonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
-        addDirectionalMovements(row, column, -1, 0, legalMovements, squares);
-        addDirectionalMovements(row, column, 1, 0, legalMovements, squares);
-        addDirectionalMovements(row, column, 0, -1, legalMovements, squares);
-        addDirectionalMovements(row, column, 0, 1, legalMovements, squares);
+    public void addOrthogonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
+        addDirectionalMovements(row, column, -1, 0, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, 0, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, 0, -1, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, 0, 1, legalMovements, squares, limiter);
     }
 
-    public void addDiagonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
-        addDirectionalMovements(row, column, -1, -1, legalMovements, squares);
-        addDirectionalMovements(row, column, -1, 1, legalMovements, squares);
-        addDirectionalMovements(row, column, 1, -1, legalMovements, squares);
-        addDirectionalMovements(row, column, 1, 1, legalMovements, squares);
+    public void addDiagonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
+        addDirectionalMovements(row, column, -1, -1, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, -1, 1, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, -1, legalMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, 1, legalMovements, squares, limiter);
     }
 }

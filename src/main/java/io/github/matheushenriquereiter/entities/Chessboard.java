@@ -20,9 +20,6 @@ public class Chessboard extends JFrame {
 
         Piece[][] whitePieces = generatePieces(PieceColor.BLACK);
         Piece[][] blackPieces = generatePieces(PieceColor.WHITE);
-        Rook rook = new Rook(PieceColor.WHITE);
-
-        boardSquares[4][4].setPiece(rook);
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 8; j++) {

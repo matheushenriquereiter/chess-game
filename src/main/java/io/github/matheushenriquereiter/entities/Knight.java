@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends Piece {
-    private final List<List<Integer>> movements = new ArrayList<>();
-
     public Knight(PieceColor color) {
         super(color);
     }
 
     @Override
     public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
-        movements.clear();
+        List<List<Integer>> movements = new ArrayList<>();
 
         for (int i = row - 1; i > row - 3; i--) {
             List<Integer> coordinates = new ArrayList<>();
