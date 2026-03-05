@@ -14,10 +14,7 @@ public class Bishop extends Piece {
     public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
         List<List<Integer>> legalMovements = new ArrayList<>();
 
-        addDirectionalMovements(row, column, -1, -1, legalMovements, squares);
-        addDirectionalMovements(row, column, -1, 1, legalMovements, squares);
-        addDirectionalMovements(row, column, 1, -1, legalMovements, squares);
-        addDirectionalMovements(row, column, 1, 1, legalMovements, squares);
+        addDiagonalMovements(row, column, legalMovements, squares);
 
         return legalMovements;
     }

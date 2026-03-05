@@ -66,4 +66,18 @@ public abstract class Piece {
             c += columnDelta;
         }
     }
+
+    public void addOrthogonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+        addDirectionalMovements(row, column, -1, 0, legalMovements, squares);
+        addDirectionalMovements(row, column, 1, 0, legalMovements, squares);
+        addDirectionalMovements(row, column, 0, -1, legalMovements, squares);
+        addDirectionalMovements(row, column, 0, 1, legalMovements, squares);
+    }
+
+    public void addDiagonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+        addDirectionalMovements(row, column, -1, -1, legalMovements, squares);
+        addDirectionalMovements(row, column, -1, 1, legalMovements, squares);
+        addDirectionalMovements(row, column, 1, -1, legalMovements, squares);
+        addDirectionalMovements(row, column, 1, 1, legalMovements, squares);
+    }
 }
