@@ -9,7 +9,7 @@ public enum SquareColor {
         this.hexCode = hexCode;
     }
 
-    public int getColor() {
+    public int getHex() {
         return hexCode;
     }
 }

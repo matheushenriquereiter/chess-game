@@ -11,12 +11,11 @@ public class Square extends JButton {
     private Piece piece = null;
 
     public Square(int row, int column) {
-        setPreferredSize(new Dimension(100, 100));
-        setBorderPainted(false);
-
         this.row = row;
         this.column = column;
 
+        setPreferredSize(new Dimension(100, 100));
+        setBorderPainted(false);
         setBackground(getSquareColor());
     }
 
@@ -47,10 +46,10 @@ public class Square extends JButton {
 
     public Color getSquareColor() {
         if ((row + column) % 2 == 0) {
-            return new Color(SquareColor.LIGHT.getColor());
+            return new Color(SquareColor.LIGHT.getHex());
         }
 
-        return new Color(SquareColor.BLACK.getColor());
+        return new Color(SquareColor.BLACK.getHex());
     }
 
     public boolean hasPiece() {
