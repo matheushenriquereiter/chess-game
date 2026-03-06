@@ -17,6 +17,7 @@ public class Square extends JButton {
         setPreferredSize(new Dimension(100, 100));
         setBorderPainted(false);
         setBackground(getSquareColor());
+        setFocusPainted(false);
     }
 
     public int getRow() {

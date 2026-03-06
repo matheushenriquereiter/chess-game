@@ -17,16 +17,16 @@ public abstract class Piece {
         return color;
     }
 
-    public String getIconPath() {
+    public abstract List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares);
+
+    protected String getIconPath() {
         String pieceName = getClass().getSimpleName().toLowerCase();
         String pieceColor = color.toString().toLowerCase();
 
         return ICON_PATH_TEMPLATE.formatted(pieceColor, pieceName);
     }
 
-    public abstract List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares);
-
-    public void insertLegalMovement(int row, int column, List<List<Integer>> legalMovements) {
+    protected void insertLegalMovement(int row, int column, List<List<Integer>> legalMovements) {
         List<Integer> legalMovement = new ArrayList<>();
 
         legalMovement.add(row);
@@ -35,7 +35,7 @@ public abstract class Piece {
         legalMovements.add(legalMovement);
     }
 
-    public boolean addLegalMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+    protected boolean addLegalMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
         Square square = squares[row][column];
 
         if (square.hasPiece() && square.getPiece().getColor() == getColor()) {
@@ -51,7 +51,7 @@ public abstract class Piece {
         return false;
     }
 
-    public void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares, Integer movementLimit) {
+    protected void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<List<Integer>> legalMovements, Square[][] squares, Integer movementLimit) {
         int r = row + rowDelta;
         int c = column + columnDelta;
         int counter = 0;
@@ -73,17 +73,27 @@ public abstract class Piece {
         }
     }
 
-    public void addOrthogonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
+    protected void addOrthogonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
         addDirectionalMovements(row, column, -1, 0, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, 1, 0, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, 0, -1, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, 0, 1, legalMovements, squares, limiter);
     }
 
-    public void addDiagonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
+    protected void addDiagonalMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares, Integer limiter) {
         addDirectionalMovements(row, column, -1, -1, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, -1, 1, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, 1, -1, legalMovements, squares, limiter);
         addDirectionalMovements(row, column, 1, 1, legalMovements, squares, limiter);
+    }
+
+    protected void addPieceJumpMovement(int row, int column, int rowDelta, int columnDelta, Square[][] squares, List<List<Integer>> legalMovements) {
+        if (Chessboard.positionExists(row + rowDelta, column + columnDelta)) {
+            Square square = squares[row + rowDelta][column + columnDelta];
+
+            if (!square.hasPiece() || square.hasPiece() && square.getPiece().getColor() != getColor()) {
+                insertLegalMovement(row + rowDelta, column + columnDelta, legalMovements);
+            }
+        }
     }
 }
