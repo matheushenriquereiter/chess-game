@@ -56,7 +56,7 @@ public abstract class Piece {
         int c = column + columnDelta;
         int counter = 0;
 
-        while (r >= 0 && r <= 7 && c >= 0 && c <= 7) {
+        while (Chessboard.positionExists(r, c)) {
             boolean reachedMovementLimit = (movementLimit != null) && (counter == movementLimit);
             if (reachedMovementLimit) {
                 break;
