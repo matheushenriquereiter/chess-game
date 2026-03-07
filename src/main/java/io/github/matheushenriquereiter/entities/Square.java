@@ -47,10 +47,10 @@ public class Square extends JButton {
 
     public Color getSquareColor() {
         if ((row + column) % 2 == 0) {
-            return new Color(SquareColor.LIGHT.getHex());
+            return SquareColor.LIGHT.color;
         }
 
-        return new Color(SquareColor.BLACK.getHex());
+        return SquareColor.BLACK.color;
     }
 
     public boolean hasPiece() {

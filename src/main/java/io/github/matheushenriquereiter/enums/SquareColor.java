@@ -1,15 +1,13 @@
 package io.github.matheushenriquereiter.enums;
 
+import java.awt.*;
+
 public enum SquareColor {
     LIGHT(0xE8EDF9), LIGHT_SELECTED(0xB1A7FC), BLACK(0xB7C0D8), BLACK_SELECTED(0x9990EC);
 
-    private final int hexCode;
+    public final Color color;
 
-    SquareColor(int hexCode) {
-        this.hexCode = hexCode;
-    }
-
-    public int getHex() {
-        return hexCode;
+    SquareColor(int color) {
+        this.color = new Color(color);
     }
 }

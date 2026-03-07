@@ -56,7 +56,7 @@ public abstract class Piece {
         int c = column + columnDelta;
         int counter = 0;
 
-        while (Chessboard.positionExists(r, c)) {
+        while (Chessboard.isWithinBounds(r, c)) {
             boolean reachedMovementLimit = (movementLimit != null) && (counter == movementLimit);
             if (reachedMovementLimit) {
                 break;
@@ -88,7 +88,7 @@ public abstract class Piece {
     }
 
     protected void addPieceJumpMovement(int row, int column, int rowDelta, int columnDelta, Square[][] squares, List<List<Integer>> legalMovements) {
-        if (Chessboard.positionExists(row + rowDelta, column + columnDelta)) {
+        if (Chessboard.isWithinBounds(row + rowDelta, column + columnDelta)) {
             Square square = squares[row + rowDelta][column + columnDelta];
 
             if (!square.hasPiece() || square.hasPiece() && square.getPiece().getColor() != getColor()) {

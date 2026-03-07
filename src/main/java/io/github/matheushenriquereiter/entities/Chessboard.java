@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chessboard extends JFrame {
-    private static final Square[][] squares = new Square[8][8];
+    private final Square[][] squares = new Square[8][8];
     private PieceColor playerTurn = PieceColor.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
@@ -20,11 +20,11 @@ public class Chessboard extends JFrame {
         setLayout(new GridLayout(8, 8));
         createSquares();
 
-        Piece[][] whitePieces = generatePieces(PieceColor.BLACK);
-        Piece[][] blackPieces = generatePieces(PieceColor.WHITE);
+        Piece[][] whitePieces = createDefaultPieces(PieceColor.BLACK);
+        Piece[][] blackPieces = createDefaultPieces(PieceColor.WHITE);
 
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j <= 7; j++) {
                 squares[i][j].setPiece(whitePieces[i][j]);
             }
         }
@@ -39,17 +39,38 @@ public class Chessboard extends JFrame {
         pack();
     }
 
-    public static boolean positionExists(int x, int y) {
-        return x >= 0 && x < squares[0].length && y >= 0 && y < squares[0].length;
+    public Piece[][] createDefaultPieces(PieceColor color) {
+        return new Piece[][]{
+                {
+                        new Rook(color),
+                        new Knight(color),
+                        new Bishop(color),
+                        new Queen(color),
+                        new King(color),
+                        new Bishop(color),
+                        new Knight(color),
+                        new Rook(color)
+                },
+                {
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color),
+                        new Pawn(color)
+                }
+        };
     }
 
-    public static Square[][] getSquares() {
-        return squares;
+    public static boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
     }
 
     public void createSquares() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
                 Square square = new Square(i, j);
 
                 square.addActionListener(_ -> movePieceAction(square));
@@ -60,36 +81,9 @@ public class Chessboard extends JFrame {
         }
     }
 
-    public boolean isMovementPossible(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> movements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
-
-        System.out.println(movements);
-
-        for (List<Integer> movement : movements) {
-            if (square.getRow() == movement.get(0) && square.getColumn() == movement.get(1)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Piece[][] generatePieces(PieceColor color) {
-        return new Piece[][]{{new Rook(color), new Knight(color), new Bishop(color), new Queen(color), new King(color), new Bishop(color), new Knight(color), new Rook(color)}, {new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color), new Pawn(color)}};
-    }
 
     public void movePieceAction(Square square) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Square s = squares[i][j];
-
-                if (!s.hasPiece()) {
-                    s.setIcon(null);
-                }
-
-                s.setBackground(s.getSquareColor());
-            }
-        }
+        cleanSelectedSquares();
 
         if (square.hasPiece() && playerTurn == square.getPiece().getColor()) {
             selectedSquare = square;
@@ -107,18 +101,18 @@ public class Chessboard extends JFrame {
 
             for (Square s : validSquares) {
                 if (!s.hasPiece()) {
-                    Image scaledImage = new ImageIcon("src/main/resources/piece-icons/circle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+                    Image scaledImage = new ImageIcon("src/main/resources/piece-icons/circle.png").getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
                     s.setIcon(new ImageIcon(scaledImage));
                 }
             }
 
-            selectedSquare.setBackground(new Color(SquareColor.LIGHT_SELECTED.getHex()));
+            selectedSquare.setBackground(SquareColor.LIGHT_SELECTED.color);
 
             return;
         }
 
         if (selectedPiece != null) {
-            if (isMovementPossible(square, selectedSquare, selectedPiece)) {
+            if (isMovementLegal(square, selectedSquare, selectedPiece)) {
                 if (selectedPiece instanceof Pawn pawn) {
                     pawn.setIsFirstMove(false);
                 }
@@ -135,5 +129,31 @@ public class Chessboard extends JFrame {
             selectedSquare = null;
             selectedPiece = null;
         }
+    }
+
+    private void cleanSelectedSquares() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                Square square = squares[i][j];
+
+                if (!square.hasPiece()) {
+                    square.setIcon(null);
+                }
+
+                square.setBackground(square.getSquareColor());
+            }
+        }
+    }
+
+    public boolean isMovementLegal(Square square, Square selectedSquare, Piece selectedPiece) {
+        List<List<Integer>> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+
+        for (List<Integer> legalMovement : legalMovements) {
+            if (square.getRow() == legalMovement.get(0) && square.getColumn() == legalMovement.get(1)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

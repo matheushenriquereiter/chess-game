@@ -19,4 +19,16 @@ public class King extends Piece {
 
         return legalMovements;
     }
+
+    public boolean isInCheck(int kingRow, int kingColumn, Square[][] squares) {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                Square s = squares[i][j];
+
+//                if ()
+            }
+        }
+
+        return true;
+    }
 }
