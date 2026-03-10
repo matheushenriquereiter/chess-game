@@ -1,5 +1,6 @@
 package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Position;
 import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
 
@@ -15,8 +16,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
-        List<List<Integer>> legalMovements = new ArrayList<>();
+    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
+        List<Position> legalMovements = new ArrayList<>();
 
         addForwardMovements(row, column, legalMovements, squares);
         addDiagonalCaptureMovement(row, column, legalMovements, squares);
@@ -24,22 +25,22 @@ public class Pawn extends Piece {
         return legalMovements;
     }
 
-    private void addForwardMovements(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+    private void addForwardMovements(int row, int column, List<Position> legalMovements, Square[][] squares) {
         for (int i = row + movementDirection; i != row + (isFirstMove ? 3 : 2) * movementDirection; i += movementDirection) {
             if (squares[i][column].hasPiece()) {
                 break;
             }
 
-            insertLegalMovement(i, column, legalMovements);
+            legalMovements.add(new Position(i, column));
         }
     }
 
-    private void addDiagonalCaptureMovement(int row, int column, List<List<Integer>> legalMovements, Square[][] squares) {
+    private void addDiagonalCaptureMovement(int row, int column, List<Position> legalMovements, Square[][] squares) {
         if (column != 0) {
             Square leftDiagonalSquare = squares[row + movementDirection][column - 1];
 
             if (leftDiagonalSquare.hasPiece() && leftDiagonalSquare.getPiece().getColor() != getColor()) {
-                insertLegalMovement(row + movementDirection, column - 1, legalMovements);
+                legalMovements.add(new Position(row + movementDirection, column - 1));
             }
         }
 
@@ -47,7 +48,7 @@ public class Pawn extends Piece {
             Square rightDiagonalSquare = squares[row + movementDirection][column + 1];
 
             if (rightDiagonalSquare.hasPiece() && rightDiagonalSquare.getPiece().getColor() != getColor()) {
-                insertLegalMovement(row + movementDirection, column + 1, legalMovements);
+                legalMovements.add(new Position(row + movementDirection, column + 1));
             }
         }
     }

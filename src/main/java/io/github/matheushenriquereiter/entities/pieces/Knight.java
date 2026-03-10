@@ -1,5 +1,6 @@
 package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Position;
 import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
 
@@ -12,8 +13,8 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
-        List<List<Integer>> legalMovements = new ArrayList<>();
+    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
+        List<Position> legalMovements = new ArrayList<>();
 
         addPieceJumpMovement(row, column, -2, -1, squares, legalMovements);
         addPieceJumpMovement(row, column, -2, 1, squares, legalMovements);

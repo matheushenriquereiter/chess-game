@@ -1,5 +1,6 @@
 package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Position;
 import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
 
@@ -12,8 +13,8 @@ public class King extends Piece {
     }
 
     @Override
-    public List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares) {
-        List<List<Integer>> legalMovements = new ArrayList<>();
+    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
+        List<Position> legalMovements = new ArrayList<>();
 
         addOrthogonalMovements(row, column, legalMovements, squares, 1);
         addDiagonalMovements(row, column, legalMovements, squares, 1);
@@ -29,11 +30,11 @@ public class King extends Piece {
                 Square square = squares[i][j];
 
                 if (square.hasPiece() && square.getPiece().getColor() == rivalColor) {
-                    List<List<Integer>> rivalLegalMovements = square.getPiece().getLegalMovements(square.getRow(), square.getColumn(), squares);
+                    List<Position> rivalLegalMovements = square.getPiece().getLegalMovements(square.getRow(), square.getColumn(), squares);
 
-                    for (List<Integer> rivalLegalMovement : rivalLegalMovements) {
+                    for (Position rivalLegalMovement : rivalLegalMovements) {
 
-                        if ((rivalLegalMovement.get(0) == kingRow) && (rivalLegalMovement.get(1) == kingColumn)) {
+                        if ((rivalLegalMovement.row() == kingRow) && (rivalLegalMovement.column() == kingColumn)) {
                             return true;
                         }
                     }

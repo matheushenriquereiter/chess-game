@@ -91,12 +91,12 @@ public class Chessboard extends JFrame {
             selectedSquare = square;
             selectedPiece = square.getPiece();
 
-            List<List<Integer>> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
+            List<Position> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
             List<Square> validSquares = new ArrayList<>();
 
-            for (List<Integer> legalMovement : legalMovements) {
-                int row = legalMovement.get(0);
-                int col = legalMovement.get(1);
+            for (Position legalMovement : legalMovements) {
+                int row = legalMovement.row();
+                int col = legalMovement.column();
 
                 validSquares.add(squares[row][col]);
             }
@@ -148,10 +148,10 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isMovementLegal(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
+        List<Position> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
 
-        for (List<Integer> legalMovement : legalMovements) {
-            if (square.getRow() == legalMovement.get(0) && square.getColumn() == legalMovement.get(1)) {
+        for (Position legalMovement : legalMovements) {
+            if (square.getRow() == legalMovement.row() && square.getColumn() == legalMovement.column()) {
                 return true;
             }
         }
@@ -159,16 +159,16 @@ public class Chessboard extends JFrame {
         return false;
     }
 
-    public List<List<Integer>> getReallyLegalMovements(Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+    public List<Position> getReallyLegalMovements(Square selectedSquare, Piece selectedPiece) {
+        List<Position> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
 
-        List<List<Integer>> reallyLegalMovements = new ArrayList<>();
+        List<Position> reallyLegalMovements = new ArrayList<>();
 
         squares[selectedSquare.getRow()][selectedSquare.getColumn()].removePiece();
 
-        for (List<Integer> legalMovement : legalMovements) {
-            int row = legalMovement.get(0);
-            int column = legalMovement.get(1);
+        for (Position legalMovement : legalMovements) {
+            int row = legalMovement.row();
+            int column = legalMovement.column();
             Piece oldPiece = squares[row][column].getPiece();
 
             squares[row][column].setPiece(selectedPiece);
@@ -178,13 +178,7 @@ public class Chessboard extends JFrame {
                 squares[row][column].setPiece(oldPiece);
                 continue;
             }
-
-            List<Integer> reallyLegalMovement = new ArrayList<>();
-
-            reallyLegalMovement.add(row);
-            reallyLegalMovement.add(column);
-
-            reallyLegalMovements.add(reallyLegalMovement);
+            reallyLegalMovements.add(new Position(row, column));
             squares[row][column].setPiece(oldPiece);
         }
 
