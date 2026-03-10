@@ -1,5 +1,6 @@
-package io.github.matheushenriquereiter.entities;
+package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
 
 import java.util.ArrayList;

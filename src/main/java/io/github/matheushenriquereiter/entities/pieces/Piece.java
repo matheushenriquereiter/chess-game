@@ -1,5 +1,7 @@
-package io.github.matheushenriquereiter.entities;
+package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Chessboard;
+import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public abstract class Piece {
 
     public abstract List<List<Integer>> getLegalMovements(int row, int column, Square[][] squares);
 
-    protected String getIconPath() {
+    public String getIconPath() {
         String pieceName = getClass().getSimpleName().toLowerCase();
         String pieceColor = color.toString().toLowerCase();
 

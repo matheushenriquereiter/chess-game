@@ -1,5 +1,6 @@
-package io.github.matheushenriquereiter.entities;
+package io.github.matheushenriquereiter.entities.board;
 
+import io.github.matheushenriquereiter.entities.pieces.*;
 import io.github.matheushenriquereiter.enums.PieceColor;
 import io.github.matheushenriquereiter.enums.SquareColor;
 
@@ -15,6 +16,7 @@ public class Chessboard extends JFrame {
     private Piece selectedPiece;
 
     public Chessboard() {
+        setLocationRelativeTo(null); //nu nu nu
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(new GridLayout(8, 8));
@@ -89,7 +91,7 @@ public class Chessboard extends JFrame {
             selectedSquare = square;
             selectedPiece = square.getPiece();
 
-            List<List<Integer>> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+            List<List<Integer>> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
             List<Square> validSquares = new ArrayList<>();
 
             for (List<Integer> legalMovement : legalMovements) {
@@ -146,7 +148,7 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isMovementLegal(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<List<Integer>> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+        List<List<Integer>> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
 
         for (List<Integer> legalMovement : legalMovements) {
             if (square.getRow() == legalMovement.get(0) && square.getColumn() == legalMovement.get(1)) {
@@ -155,5 +157,53 @@ public class Chessboard extends JFrame {
         }
 
         return false;
+    }
+
+    public List<List<Integer>> getReallyLegalMovements(Square selectedSquare, Piece selectedPiece) {
+        List<List<Integer>> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+
+        List<List<Integer>> reallyLegalMovements = new ArrayList<>();
+
+        squares[selectedSquare.getRow()][selectedSquare.getColumn()].removePiece();
+
+        for (List<Integer> legalMovement : legalMovements) {
+            int row = legalMovement.get(0);
+            int column = legalMovement.get(1);
+            Piece oldPiece = squares[row][column].getPiece();
+
+            squares[row][column].setPiece(selectedPiece);
+            Square kingSquare = getCurrentTurnKingSquare();
+
+            if (((King) kingSquare.getPiece()).isInCheck(kingSquare.getRow(), kingSquare.getColumn(), squares)) {
+                squares[row][column].setPiece(oldPiece);
+                continue;
+            }
+
+            List<Integer> reallyLegalMovement = new ArrayList<>();
+
+            reallyLegalMovement.add(row);
+            reallyLegalMovement.add(column);
+
+            reallyLegalMovements.add(reallyLegalMovement);
+            squares[row][column].setPiece(oldPiece);
+        }
+
+        selectedSquare.setPiece(selectedPiece);
+
+        return reallyLegalMovements;
+    }
+
+    public Square getCurrentTurnKingSquare() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                Square square = squares[i][j];
+
+                if (square.hasPiece() && square.getPiece() instanceof King && square.getPiece().getColor() == playerTurn) {
+                    return square;
+                }
+            }
+        }
+
+        return null;
     }
 }

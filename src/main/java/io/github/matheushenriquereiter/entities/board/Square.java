@@ -1,5 +1,6 @@
-package io.github.matheushenriquereiter.entities;
+package io.github.matheushenriquereiter.entities.board;
 
+import io.github.matheushenriquereiter.entities.pieces.Piece;
 import io.github.matheushenriquereiter.enums.SquareColor;
 
 import javax.swing.*;
@@ -35,8 +36,12 @@ public class Square extends JButton {
     public void setPiece(Piece piece) {
         this.piece = piece;
 
-        Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-        setIcon(new ImageIcon(scaledImage));
+        if (piece != null) {
+            Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+            setIcon(new ImageIcon(scaledImage));
+        } else {
+            setIcon(null);
+        }
     }
 
     public void removePiece() {
