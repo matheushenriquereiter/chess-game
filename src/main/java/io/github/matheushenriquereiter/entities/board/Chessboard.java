@@ -14,17 +14,28 @@ public class Chessboard extends JFrame {
     private PieceColor playerTurn = PieceColor.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
+    private Piece[][] whitePieces = createDefaultPieces(PieceColor.BLACK);
+    private Piece[][] blackPieces = createDefaultPieces(PieceColor.WHITE);
 
     public Chessboard() {
-        setLocationRelativeTo(null); //nu nu nu
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(new GridLayout(8, 8));
         createSquares();
 
-        Piece[][] whitePieces = createDefaultPieces(PieceColor.BLACK);
-        Piece[][] blackPieces = createDefaultPieces(PieceColor.WHITE);
 
+        positionChessPieces(whitePieces, blackPieces);
+
+        setVisible(true);
+        pack();
+    }
+
+    public static boolean isWithinBounds(int x, int y) {
+        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
+    }
+
+    public void positionChessPieces(Piece[][] whitePieces, Piece[][] blackPieces) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j <= 7; j++) {
                 squares[i][j].setPiece(whitePieces[i][j]);
@@ -36,9 +47,6 @@ public class Chessboard extends JFrame {
                 squares[squares[0].length - i - 1][j].setPiece(blackPieces[i][j]);
             }
         }
-
-        setVisible(true);
-        pack();
     }
 
     public Piece[][] createDefaultPieces(PieceColor color) {
@@ -66,16 +74,12 @@ public class Chessboard extends JFrame {
         };
     }
 
-    public static boolean isWithinBounds(int x, int y) {
-        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
-    }
-
     public void createSquares() {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 Square square = new Square(i, j);
 
-                square.addActionListener(_ -> movePieceAction(square));
+                square.addActionListener(_ -> onSquareClicked(square));
 
                 squares[i][j] = square;
                 add(square);
@@ -83,57 +87,53 @@ public class Chessboard extends JFrame {
         }
     }
 
+    public void onSquareClicked(Square clickedSquare) {
+        clearSelectedSquares();
 
-    public void movePieceAction(Square square) {
-        cleanSelectedSquares();
+        if (clickedSquare.hasPiece() && playerTurn == clickedSquare.getPiece().getColor()) {
+            selectedSquare = clickedSquare;
+            selectedPiece = clickedSquare.getPiece();
 
-        if (square.hasPiece() && playerTurn == square.getPiece().getColor()) {
-            selectedSquare = square;
-            selectedPiece = square.getPiece();
-
-            List<Position> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
-            List<Square> validSquares = new ArrayList<>();
-
-            for (Position legalMovement : legalMovements) {
-                int row = legalMovement.row();
-                int col = legalMovement.column();
-
-                validSquares.add(squares[row][col]);
-            }
-
-            for (Square s : validSquares) {
-                if (!s.hasPiece()) {
-                    Image scaledImage = new ImageIcon("src/main/resources/piece-icons/circle.png").getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
-                    s.setIcon(new ImageIcon(scaledImage));
-                }
-            }
-
+            paintLegalMovementsSquares(selectedSquare, selectedPiece);
             selectedSquare.setBackground(SquareColor.LIGHT_SELECTED.color);
 
             return;
         }
 
-        if (selectedPiece != null) {
-            if (isMovementLegal(square, selectedSquare, selectedPiece)) {
-                if (selectedPiece instanceof Pawn pawn) {
-                    pawn.setIsFirstMove(false);
-                }
-
-                if (square.hasPiece()) {
-                    square.removePiece();
-                }
-
-                square.setPiece(selectedPiece);
-                selectedSquare.removePiece();
-                playerTurn = playerTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+        if (selectedPiece != null && isMovementLegal(clickedSquare, selectedSquare, selectedPiece)) {
+            if (selectedPiece instanceof Pawn pawn) {
+                pawn.setIsFirstMove(false);
             }
 
+            if (clickedSquare.hasPiece()) {
+                clickedSquare.removePiece();
+            }
+
+            clickedSquare.setPiece(selectedPiece);
+            selectedSquare.removePiece();
+            changePlayerTurn();
             selectedSquare = null;
             selectedPiece = null;
+
+            if (isCheckmate()) {
+                JOptionPane.showMessageDialog(this, "Winning team: %s Pieces".formatted(playerTurn == PieceColor.WHITE ? "Black" : "White"), "Game Over", JOptionPane.PLAIN_MESSAGE);
+
+                for (int i = 0; i <= 7; i++) {
+                    for (int j = 0; j <= 7; j++) {
+                        squares[i][j].removePiece();
+                    }
+                }
+
+                positionChessPieces(whitePieces, blackPieces);
+            }
         }
     }
 
-    private void cleanSelectedSquares() {
+    public void changePlayerTurn() {
+        playerTurn = playerTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    }
+
+    public void clearSelectedSquares() {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 Square square = squares[i][j];
@@ -147,8 +147,24 @@ public class Chessboard extends JFrame {
         }
     }
 
+    public void paintLegalMovementsSquares(Square selectedSquare, Piece selectedPiece) {
+        List<Position> legalMovements = getLegalMovements(selectedSquare, selectedPiece);
+        List<Square> squaresToPaint = new ArrayList<>();
+
+        for (Position legalMovement : legalMovements) {
+            int row = legalMovement.row();
+            int col = legalMovement.column();
+
+            squaresToPaint.add(squares[row][col]);
+        }
+
+        for (Square squareToPaint : squaresToPaint) {
+            squareToPaint.paintLegalSquare();
+        }
+    }
+
     public boolean isMovementLegal(Square square, Square selectedSquare, Piece selectedPiece) {
-        List<Position> legalMovements = getReallyLegalMovements(selectedSquare, selectedPiece);
+        List<Position> legalMovements = getLegalMovements(selectedSquare, selectedPiece);
 
         for (Position legalMovement : legalMovements) {
             if (square.getRow() == legalMovement.row() && square.getColumn() == legalMovement.column()) {
@@ -159,32 +175,32 @@ public class Chessboard extends JFrame {
         return false;
     }
 
-    public List<Position> getReallyLegalMovements(Square selectedSquare, Piece selectedPiece) {
-        List<Position> legalMovements = selectedPiece.getLegalMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+    public List<Position> getLegalMovements(Square selectedSquare, Piece selectedPiece) {
+        List<Position> possibleMovements = selectedPiece.getPossibleMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
+        List<Position> legalMovements = new ArrayList<>();
 
-        List<Position> reallyLegalMovements = new ArrayList<>();
+        selectedSquare.removePiece();
 
-        squares[selectedSquare.getRow()][selectedSquare.getColumn()].removePiece();
+        for (Position possibleMovement : possibleMovements) {
+            Square possibleMovementSquare = squares[possibleMovement.row()][possibleMovement.column()];
+            Piece squarePreviousPiece = possibleMovementSquare.getPiece();
 
-        for (Position legalMovement : legalMovements) {
-            int row = legalMovement.row();
-            int column = legalMovement.column();
-            Piece oldPiece = squares[row][column].getPiece();
-
-            squares[row][column].setPiece(selectedPiece);
+            possibleMovementSquare.setPiece(selectedPiece);
             Square kingSquare = getCurrentTurnKingSquare();
+            King currentTurnKing = (King) kingSquare.getPiece();
 
-            if (((King) kingSquare.getPiece()).isInCheck(kingSquare.getRow(), kingSquare.getColumn(), squares)) {
-                squares[row][column].setPiece(oldPiece);
+            if (currentTurnKing.isInCheck(kingSquare.getRow(), kingSquare.getColumn(), squares)) {
+                possibleMovementSquare.setPiece(squarePreviousPiece);
                 continue;
             }
-            reallyLegalMovements.add(new Position(row, column));
-            squares[row][column].setPiece(oldPiece);
+
+            legalMovements.add(new Position(possibleMovement.row(), possibleMovement.column()));
+            possibleMovementSquare.setPiece(squarePreviousPiece);
         }
 
         selectedSquare.setPiece(selectedPiece);
 
-        return reallyLegalMovements;
+        return legalMovements;
     }
 
     public Square getCurrentTurnKingSquare() {
@@ -199,5 +215,23 @@ public class Chessboard extends JFrame {
         }
 
         return null;
+    }
+
+    public boolean isCheckmate() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                Square square = squares[i][j];
+
+                if (square.hasPiece() && square.getPiece().getColor() == playerTurn) {
+                    List<Position> legalMovements = getLegalMovements(square, square.getPiece());
+
+                    if (!legalMovements.isEmpty()) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }

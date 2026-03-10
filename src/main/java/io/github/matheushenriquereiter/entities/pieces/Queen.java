@@ -13,12 +13,12 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
-        List<Position> legalMovements = new ArrayList<>();
+    public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
+        List<Position> possibleMovements = new ArrayList<>();
 
-        addOrthogonalMovements(row, column, legalMovements, squares, null);
-        addDiagonalMovements(row, column, legalMovements, squares, null);
+        addOrthogonalMovements(row, column, possibleMovements, squares, null);
+        addDiagonalMovements(row, column, possibleMovements, squares, null);
 
-        return legalMovements;
+        return possibleMovements;
     }
 }

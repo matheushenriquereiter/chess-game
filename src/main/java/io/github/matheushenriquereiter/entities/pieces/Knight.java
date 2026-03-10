@@ -13,21 +13,21 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
-        List<Position> legalMovements = new ArrayList<>();
+    public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
+        List<Position> possibleMovements = new ArrayList<>();
 
-        addPieceJumpMovement(row, column, -2, -1, squares, legalMovements);
-        addPieceJumpMovement(row, column, -2, 1, squares, legalMovements);
+        addPieceJumpMovement(row, column, -2, -1, squares, possibleMovements);
+        addPieceJumpMovement(row, column, -2, 1, squares, possibleMovements);
 
-        addPieceJumpMovement(row, column, -1, 2, squares, legalMovements);
-        addPieceJumpMovement(row, column, 1, 2, squares, legalMovements);
+        addPieceJumpMovement(row, column, -1, 2, squares, possibleMovements);
+        addPieceJumpMovement(row, column, 1, 2, squares, possibleMovements);
 
-        addPieceJumpMovement(row, column, 2, 1, squares, legalMovements);
-        addPieceJumpMovement(row, column, 2, -1, squares, legalMovements);
+        addPieceJumpMovement(row, column, 2, 1, squares, possibleMovements);
+        addPieceJumpMovement(row, column, 2, -1, squares, possibleMovements);
 
-        addPieceJumpMovement(row, column, 1, -2, squares, legalMovements);
-        addPieceJumpMovement(row, column, -1, -2, squares, legalMovements);
+        addPieceJumpMovement(row, column, 1, -2, squares, possibleMovements);
+        addPieceJumpMovement(row, column, -1, -2, squares, possibleMovements);
 
-        return legalMovements;
+        return possibleMovements;
     }
 }

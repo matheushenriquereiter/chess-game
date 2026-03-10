@@ -19,7 +19,7 @@ public abstract class Piece {
         return color;
     }
 
-    public abstract List<Position> getLegalMovements(int row, int column, Square[][] squares);
+    public abstract List<Position> getPossibleMovements(int row, int column, Square[][] squares);
 
     public String getIconPath() {
         String pieceName = getClass().getSimpleName().toLowerCase();
@@ -28,7 +28,7 @@ public abstract class Piece {
         return ICON_PATH_TEMPLATE.formatted(pieceColor, pieceName);
     }
 
-    protected boolean addLegalMovement(int row, int column, List<Position> legalMovements, Square[][] squares) {
+    protected boolean addPossibleMovement(int row, int column, List<Position> possibleMovements, Square[][] squares) {
         Square square = squares[row][column];
 
         if (square.hasPiece() && square.getPiece().getColor() == getColor()) {
@@ -36,15 +36,15 @@ public abstract class Piece {
         }
 
         if (square.hasPiece()) {
-            legalMovements.add(new Position(row, column));
+            possibleMovements.add(new Position(row, column));
             return true;
         }
 
-        legalMovements.add(new Position(row, column));
+        possibleMovements.add(new Position(row, column));
         return false;
     }
 
-    protected void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<Position> legalMovements, Square[][] squares, Integer movementLimit) {
+    protected void addDirectionalMovements(int row, int column, int rowDelta, int columnDelta, List<Position> possibleMovements, Square[][] squares, Integer movementLimit) {
         int r = row + rowDelta;
         int c = column + columnDelta;
         int counter = 0;
@@ -55,7 +55,7 @@ public abstract class Piece {
                 break;
             }
 
-            boolean squareHasPiece = addLegalMovement(r, c, legalMovements, squares);
+            boolean squareHasPiece = addPossibleMovement(r, c, possibleMovements, squares);
             if (squareHasPiece) {
                 break;
             }
@@ -66,26 +66,26 @@ public abstract class Piece {
         }
     }
 
-    protected void addOrthogonalMovements(int row, int column, List<Position> legalMovements, Square[][] squares, Integer limiter) {
-        addDirectionalMovements(row, column, -1, 0, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, 1, 0, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, 0, -1, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, 0, 1, legalMovements, squares, limiter);
+    protected void addOrthogonalMovements(int row, int column, List<Position> possibleMovements, Square[][] squares, Integer limiter) {
+        addDirectionalMovements(row, column, -1, 0, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, 0, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, 0, -1, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, 0, 1, possibleMovements, squares, limiter);
     }
 
-    protected void addDiagonalMovements(int row, int column, List<Position> legalMovements, Square[][] squares, Integer limiter) {
-        addDirectionalMovements(row, column, -1, -1, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, -1, 1, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, 1, -1, legalMovements, squares, limiter);
-        addDirectionalMovements(row, column, 1, 1, legalMovements, squares, limiter);
+    protected void addDiagonalMovements(int row, int column, List<Position> possibleMovements, Square[][] squares, Integer limiter) {
+        addDirectionalMovements(row, column, -1, -1, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, -1, 1, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, -1, possibleMovements, squares, limiter);
+        addDirectionalMovements(row, column, 1, 1, possibleMovements, squares, limiter);
     }
 
-    protected void addPieceJumpMovement(int row, int column, int rowDelta, int columnDelta, Square[][] squares, List<Position> legalMovements) {
+    protected void addPieceJumpMovement(int row, int column, int rowDelta, int columnDelta, Square[][] squares, List<Position> possibleMovements) {
         if (Chessboard.isWithinBounds(row + rowDelta, column + columnDelta)) {
             Square square = squares[row + rowDelta][column + columnDelta];
 
             if (!square.hasPiece() || square.hasPiece() && square.getPiece().getColor() != getColor()) {
-                legalMovements.add(new Position(row + rowDelta, column + columnDelta));
+                possibleMovements.add(new Position(row + rowDelta, column + columnDelta));
             }
         }
     }

@@ -13,26 +13,26 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Position> getLegalMovements(int row, int column, Square[][] squares) {
-        List<Position> legalMovements = new ArrayList<>();
+    public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
+        List<Position> possibleMovements = new ArrayList<>();
 
-        addOrthogonalMovements(row, column, legalMovements, squares, 1);
-        addDiagonalMovements(row, column, legalMovements, squares, 1);
+        addOrthogonalMovements(row, column, possibleMovements, squares, 1);
+        addDiagonalMovements(row, column, possibleMovements, squares, 1);
 
-        return legalMovements;
+        return possibleMovements;
     }
 
     public boolean isInCheck(int kingRow, int kingColumn, Square[][] squares) {
-        PieceColor rivalColor = getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+        PieceColor rivalPlayerColor = getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
 
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 Square square = squares[i][j];
 
-                if (square.hasPiece() && square.getPiece().getColor() == rivalColor) {
-                    List<Position> rivalLegalMovements = square.getPiece().getLegalMovements(square.getRow(), square.getColumn(), squares);
+                if (square.hasPiece() && square.getPiece().getColor() == rivalPlayerColor) {
+                    List<Position> rivalPossibleMovements = square.getPiece().getPossibleMovements(square.getRow(), square.getColumn(), squares);
 
-                    for (Position rivalLegalMovement : rivalLegalMovements) {
+                    for (Position rivalLegalMovement : rivalPossibleMovements) {
 
                         if ((rivalLegalMovement.row() == kingRow) && (rivalLegalMovement.column() == kingColumn)) {
                             return true;

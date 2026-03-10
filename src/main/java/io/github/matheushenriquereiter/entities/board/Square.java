@@ -58,6 +58,13 @@ public class Square extends JButton {
         return SquareColor.BLACK.color;
     }
 
+    public void paintLegalSquare() {
+        if (!this.hasPiece()) {
+            Image circleImage = new ImageIcon("src/main/resources/piece-icons/circle.png").getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
+            this.setIcon(new ImageIcon(circleImage));
+        }
+    }
+
     public boolean hasPiece() {
         return piece != null;
     }
