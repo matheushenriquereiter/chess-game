@@ -1,5 +1,6 @@
 package io.github.matheushenriquereiter.entities.pieces;
 
+import io.github.matheushenriquereiter.entities.board.Chessboard;
 import io.github.matheushenriquereiter.entities.board.Position;
 import io.github.matheushenriquereiter.entities.board.Square;
 import io.github.matheushenriquereiter.enums.PieceColor;
@@ -27,7 +28,7 @@ public class Pawn extends Piece {
 
     private void addForwardMovements(int row, int column, List<Position> possibleMovements, Square[][] squares) {
         for (int i = row + movementDirection; i != row + (isFirstMove ? 3 : 2) * movementDirection; i += movementDirection) {
-            if (squares[i][column].hasPiece()) {
+            if (!Chessboard.isWithinBounds(i, column) || squares[i][column].hasPiece()) {
                 break;
             }
 
@@ -36,7 +37,7 @@ public class Pawn extends Piece {
     }
 
     private void addDiagonalCaptureMovement(int row, int column, List<Position> possibleMovements, Square[][] squares) {
-        if (column != 0) {
+        if (Chessboard.isWithinBounds(row + movementDirection, column - 1)) {
             Square leftDiagonalSquare = squares[row + movementDirection][column - 1];
 
             if (leftDiagonalSquare.hasPiece() && leftDiagonalSquare.getPiece().getColor() != getColor()) {
@@ -44,10 +45,10 @@ public class Pawn extends Piece {
             }
         }
 
-        if (column != 7) {
-            Square rightDiagonalSquare = squares[row + movementDirection][column + 1];
+        if (Chessboard.isWithinBounds(row + movementDirection, column + 1)) {
+            Square leftDiagonalSquare = squares[row + movementDirection][column + 1];
 
-            if (rightDiagonalSquare.hasPiece() && rightDiagonalSquare.getPiece().getColor() != getColor()) {
+            if (leftDiagonalSquare.hasPiece() && leftDiagonalSquare.getPiece().getColor() != getColor()) {
                 possibleMovements.add(new Position(row + movementDirection, column + 1));
             }
         }

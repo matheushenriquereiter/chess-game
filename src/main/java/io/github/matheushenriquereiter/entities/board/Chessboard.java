@@ -31,8 +31,8 @@ public class Chessboard extends JFrame {
         pack();
     }
 
-    public static boolean isWithinBounds(int x, int y) {
-        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
+    public static boolean isWithinBounds(int row, int column) {
+        return row >= 0 && row <= 7 && column >= 0 && column <= 7;
     }
 
     public void positionChessPieces(Piece[][] whitePieces, Piece[][] blackPieces) {
@@ -104,6 +104,15 @@ public class Chessboard extends JFrame {
             if (selectedPiece instanceof Pawn pawn) {
                 pawn.setIsFirstMove(false);
             }
+
+//            if (selectedPiece instanceof Pawn && clickedSquare.getRow() == 0 && playerTurn == PieceColor.WHITE) {
+//                System.out.println("dsads");
+//                clickedSquare.setPiece(new Queen(PieceColor.WHITE));
+//            }
+//
+//            if (selectedPiece instanceof Pawn && clickedSquare.getRow() == 7 && playerTurn == PieceColor.BLACK) {
+//                clickedSquare.setPiece(new Queen(PieceColor.BLACK));
+//            }
 
             if (clickedSquare.hasPiece()) {
                 clickedSquare.removePiece();
