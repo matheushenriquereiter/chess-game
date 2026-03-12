@@ -11,11 +11,11 @@ import java.util.List;
 
 public class Chessboard extends JFrame {
     private final Square[][] squares = new Square[8][8];
+    private final Piece[][] whitePieces = createDefaultPieces(PieceColor.BLACK);
+    private final Piece[][] blackPieces = createDefaultPieces(PieceColor.WHITE);
     private PieceColor playerTurn = PieceColor.WHITE;
     private Square selectedSquare;
     private Piece selectedPiece;
-    private Piece[][] whitePieces = createDefaultPieces(PieceColor.BLACK);
-    private Piece[][] blackPieces = createDefaultPieces(PieceColor.WHITE);
 
     public Chessboard() {
         setLocationRelativeTo(null);
@@ -105,20 +105,16 @@ public class Chessboard extends JFrame {
                 pawn.setIsFirstMove(false);
             }
 
-//            if (selectedPiece instanceof Pawn && clickedSquare.getRow() == 0 && playerTurn == PieceColor.WHITE) {
-//                System.out.println("dsads");
-//                clickedSquare.setPiece(new Queen(PieceColor.WHITE));
-//            }
-//
-//            if (selectedPiece instanceof Pawn && clickedSquare.getRow() == 7 && playerTurn == PieceColor.BLACK) {
-//                clickedSquare.setPiece(new Queen(PieceColor.BLACK));
-//            }
-
             if (clickedSquare.hasPiece()) {
                 clickedSquare.removePiece();
             }
 
-            clickedSquare.setPiece(selectedPiece);
+            if (isPawnPromotable(clickedSquare)) {
+                clickedSquare.setPiece(new Queen(playerTurn));
+            } else {
+                clickedSquare.setPiece(selectedPiece);
+            }
+
             selectedSquare.removePiece();
             changePlayerTurn();
             selectedSquare = null;
@@ -136,6 +132,10 @@ public class Chessboard extends JFrame {
                 positionChessPieces(whitePieces, blackPieces);
             }
         }
+    }
+
+    private boolean isPawnPromotable(Square clickedSquare) {
+        return selectedPiece instanceof Pawn && (clickedSquare.getRow() == 0 || clickedSquare.getRow() == 7);
     }
 
     public void changePlayerTurn() {
