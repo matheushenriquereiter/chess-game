@@ -22,22 +22,31 @@ public class King extends Piece {
         return possibleMovements;
     }
 
-    public boolean isInCheck(int kingRow, int kingColumn, Square[][] squares) {
-        PieceColor rivalPlayerColor = getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    public PieceColor getOpponentColor() {
+        return getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    }
 
+    public boolean isInCheck(int kingRow, int kingColumn, Square[][] squares) {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 Square square = squares[i][j];
 
-                if (square.hasPiece() && square.getPiece().getColor() == rivalPlayerColor) {
-                    List<Position> rivalPossibleMovements = square.getPiece().getPossibleMovements(square.getRow(), square.getColumn(), squares);
+                if (isKingUnderAttack(kingRow, kingColumn, square, squares)) {
+                    return true;
+                }
+            }
+        }
 
-                    for (Position rivalLegalMovement : rivalPossibleMovements) {
+        return false;
+    }
 
-                        if ((rivalLegalMovement.row() == kingRow) && (rivalLegalMovement.column() == kingColumn)) {
-                            return true;
-                        }
-                    }
+    public boolean isKingUnderAttack(int kingRow, int kingColumn, Square square, Square[][] squares) {
+        if (square.hasPiece() && square.getPiece().getColor() == getOpponentColor()) {
+            List<Position> opponentPossibleMovements = square.getPiece().getPossibleMovements(square.getRow(), square.getColumn(), squares);
+
+            for (Position opponentLegalMovement : opponentPossibleMovements) {
+                if (opponentLegalMovement.row() == kingRow && opponentLegalMovement.column() == kingColumn) {
+                    return true;
                 }
             }
         }
