@@ -16,17 +16,17 @@ public class Knight extends Piece {
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
         List<Position> possibleMovements = new ArrayList<>();
 
-        addPieceJumpMovement(row, column, -2, -1, squares, possibleMovements);
-        addPieceJumpMovement(row, column, -2, 1, squares, possibleMovements);
+        possibleMovements.addAll(getJumpMovement(row, column, -2, -1, squares));
+        possibleMovements.addAll(getJumpMovement(row, column, -2, 1, squares));
 
-        addPieceJumpMovement(row, column, -1, 2, squares, possibleMovements);
-        addPieceJumpMovement(row, column, 1, 2, squares, possibleMovements);
+        possibleMovements.addAll(getJumpMovement(row, column, -1, 2, squares));
+        possibleMovements.addAll(getJumpMovement(row, column, 1, 2, squares));
 
-        addPieceJumpMovement(row, column, 2, 1, squares, possibleMovements);
-        addPieceJumpMovement(row, column, 2, -1, squares, possibleMovements);
+        possibleMovements.addAll(getJumpMovement(row, column, 2, 1, squares));
+        possibleMovements.addAll(getJumpMovement(row, column, 2, -1, squares));
 
-        addPieceJumpMovement(row, column, 1, -2, squares, possibleMovements);
-        addPieceJumpMovement(row, column, -1, -2, squares, possibleMovements);
+        possibleMovements.addAll(getJumpMovement(row, column, 1, -2, squares));
+        possibleMovements.addAll(getJumpMovement(row, column, -1, -2, squares));
 
         return possibleMovements;
     }

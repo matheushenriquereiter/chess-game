@@ -20,28 +20,34 @@ public class Pawn extends Piece {
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
         List<Position> possibleMovements = new ArrayList<>();
 
-        addForwardMovements(row, column, possibleMovements, squares);
-        addDiagonalCaptureMovement(row, column, possibleMovements, squares);
+        possibleMovements.addAll(getForwardMovements(row, column, squares));
+        possibleMovements.addAll(getDiagonalCaptureMovement(row, column, squares));
 
         return possibleMovements;
     }
 
-    private void addForwardMovements(int row, int column, List<Position> possibleMovements, Square[][] squares) {
+    private List<Position> getForwardMovements(int row, int column, Square[][] squares) {
+        List<Position> forwardMovements = new ArrayList<>();
+
         for (int i = row + movementDirection; i != row + (isFirstMove ? 3 : 2) * movementDirection; i += movementDirection) {
             if (!Chessboard.isWithinBounds(i, column) || squares[i][column].hasPiece()) {
                 break;
             }
 
-            possibleMovements.add(new Position(i, column));
+            forwardMovements.add(new Position(i, column));
         }
+
+        return forwardMovements;
     }
 
-    private void addDiagonalCaptureMovement(int row, int column, List<Position> possibleMovements, Square[][] squares) {
+    private List<Position> getDiagonalCaptureMovement(int row, int column, Square[][] squares) {
+        List<Position> diagonalMovements = new ArrayList<>();
+
         if (Chessboard.isWithinBounds(row + movementDirection, column - 1)) {
             Square leftDiagonalSquare = squares[row + movementDirection][column - 1];
 
             if (leftDiagonalSquare.hasPiece() && leftDiagonalSquare.getPiece().getColor() != getColor()) {
-                possibleMovements.add(new Position(row + movementDirection, column - 1));
+                diagonalMovements.add(new Position(row + movementDirection, column - 1));
             }
         }
 
@@ -49,9 +55,11 @@ public class Pawn extends Piece {
             Square leftDiagonalSquare = squares[row + movementDirection][column + 1];
 
             if (leftDiagonalSquare.hasPiece() && leftDiagonalSquare.getPiece().getColor() != getColor()) {
-                possibleMovements.add(new Position(row + movementDirection, column + 1));
+                diagonalMovements.add(new Position(row + movementDirection, column + 1));
             }
         }
+
+        return diagonalMovements;
     }
 
     public void setIsFirstMove(boolean isFirstMove) {

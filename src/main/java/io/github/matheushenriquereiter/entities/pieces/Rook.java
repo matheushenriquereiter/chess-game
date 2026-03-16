@@ -14,10 +14,6 @@ public class Rook extends Piece {
 
     @Override
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
-        List<Position> possibleMovements = new ArrayList<>();
-
-        addOrthogonalMovements(row, column, possibleMovements, squares, null);
-
-        return possibleMovements;
+        return new ArrayList<>(getOrthogonalMovements(row, column, squares, null));
     }
 }

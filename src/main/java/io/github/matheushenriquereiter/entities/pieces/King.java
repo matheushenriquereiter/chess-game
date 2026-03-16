@@ -16,8 +16,8 @@ public class King extends Piece {
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
         List<Position> possibleMovements = new ArrayList<>();
 
-        addOrthogonalMovements(row, column, possibleMovements, squares, 1);
-        addDiagonalMovements(row, column, possibleMovements, squares, 1);
+        possibleMovements.addAll(getOrthogonalMovements(row, column, squares, 1));
+        possibleMovements.addAll(getDiagonalMovements(row, column, squares, 1));
 
         return possibleMovements;
     }

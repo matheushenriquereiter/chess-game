@@ -14,10 +14,6 @@ public class Bishop extends Piece {
 
     @Override
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
-        List<Position> possibleMovements = new ArrayList<>();
-
-        addDiagonalMovements(row, column, possibleMovements, squares, null);
-
-        return possibleMovements;
+        return new ArrayList<>(getDiagonalMovements(row, column, squares, null));
     }
 }

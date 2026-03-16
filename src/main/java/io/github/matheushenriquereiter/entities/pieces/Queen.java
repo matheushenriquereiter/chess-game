@@ -16,8 +16,8 @@ public class Queen extends Piece {
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
         List<Position> possibleMovements = new ArrayList<>();
 
-        addOrthogonalMovements(row, column, possibleMovements, squares, null);
-        addDiagonalMovements(row, column, possibleMovements, squares, null);
+        possibleMovements.addAll(getOrthogonalMovements(row, column, squares, null));
+        possibleMovements.addAll(getDiagonalMovements(row, column, squares, null));
 
         return possibleMovements;
     }

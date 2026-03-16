@@ -36,17 +36,17 @@ public class Square extends JButton {
     public void setPiece(Piece piece) {
         this.piece = piece;
 
-        if (piece != null) {
-            Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-            setIcon(new ImageIcon(scaledImage));
-        } else {
+        if (piece == null) {
             setIcon(null);
+            return;
         }
+
+        Image scaledImage = new ImageIcon(piece.getIconPath()).getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        setIcon(new ImageIcon(scaledImage));
     }
 
     public void removePiece() {
         this.piece = null;
-
         setIcon(null);
     }
 
