@@ -22,6 +22,10 @@ public abstract class Piece {
 
     public abstract List<Position> getPossibleMovements(int row, int column, Square[][] squares);
 
+    public PieceColor getOpponentColor() {
+        return getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    }
+
     public String getIconPath() {
         String pieceName = getClass().getSimpleName().toLowerCase();
         String pieceColor = color.toString().toLowerCase();
@@ -36,20 +40,14 @@ public abstract class Piece {
         int c = column + columnDelta;
         int counter = 0;
 
-        while (Chessboard.isWithinBounds(r, c)) {
-            boolean reachedMovementLimit = (movementLimit != null) && (counter == movementLimit);
-            if (reachedMovementLimit) {
-                break;
-            }
-
+        while (Chessboard.isWithinBounds(r, c) && (movementLimit == null || counter < movementLimit)) {
             Square square = squares[r][c];
 
-            if (square.hasPiece() && square.getPiece().getColor() == getColor()) {
-                break;
-            }
-
             if (square.hasPiece()) {
-                directionalMovements.add(new Position(r, c));
+                if (square.getPiece().getColor() == getOpponentColor()) {
+                    directionalMovements.add(new Position(r, c));
+                }
+
                 break;
             }
 

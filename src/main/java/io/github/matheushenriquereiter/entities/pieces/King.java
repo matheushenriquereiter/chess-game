@@ -22,10 +22,6 @@ public class King extends Piece {
         return possibleMovements;
     }
 
-    public PieceColor getOpponentColor() {
-        return getColor() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-    }
-
     public boolean isInCheck(int kingRow, int kingColumn, Square[][] squares) {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
