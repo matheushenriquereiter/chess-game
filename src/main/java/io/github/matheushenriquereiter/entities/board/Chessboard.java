@@ -21,9 +21,8 @@ public class Chessboard extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setLayout(new GridLayout(8, 8));
-        createSquares();
-
+        setLayout(new BorderLayout());
+        createBoard();
 
         setUpChessPieces(whitePieces, blackPieces);
 
@@ -74,17 +73,67 @@ public class Chessboard extends JFrame {
         };
     }
 
-    public void createSquares() {
+    public void createBoard() {
+        JPanel boardPanel = new JPanel(new GridLayout(8, 8));
+        JPanel numberPanel = new JPanel(new GridLayout(8, 1));
+        JPanel topPanel = new JPanel(new GridLayout(1, 8));
+        JPanel rightPanel = new JPanel(new GridLayout(8, 1));
+        JPanel letterPanel = new JPanel(new GridLayout(1, 8));
+
+        JPanel cornerPanel = new JPanel();
+        cornerPanel.setPreferredSize(new Dimension(20, 20));
+
         for (int i = 0; i <= 7; i++) {
+            JLabel rightLabel = new JLabel();
+            rightLabel.setPreferredSize(new Dimension(20, 20));
+            topPanel.add(rightLabel);
+
+            JLabel numberLabel = new JLabel(String.valueOf(8 - i));
+            numberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            numberLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            numberLabel.setPreferredSize(new Dimension(60, 100));
+            numberPanel.add(numberLabel);
+
             for (int j = 0; j <= 7; j++) {
                 Square square = new Square(i, j);
-
                 square.addActionListener(_ -> onSquareClicked(square));
-
                 squares[i][j] = square;
-                add(square);
+                boardPanel.add(square);
             }
         }
+
+        for (int i = 0; i <= 7; i++) {
+            JLabel topLabel = new JLabel();
+            topLabel.setPreferredSize(new Dimension(20, 20));
+            topPanel.add(topLabel);
+
+            char letter = (char) ('A' + i);
+            JLabel letterLabel = new JLabel(String.valueOf(letter));
+            letterLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            letterLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            letterLabel.setPreferredSize(new Dimension(100, 60));
+            letterPanel.add(letterLabel);
+        }
+
+        add(boardPanel, BorderLayout.CENTER);
+        add(numberPanel, BorderLayout.WEST);
+
+        JPanel bottomWrapper = new JPanel(new BorderLayout());
+        bottomWrapper.add(cornerPanel, BorderLayout.WEST);
+        bottomWrapper.add(letterPanel, BorderLayout.CENTER);
+
+        JPanel topWrapper = new JPanel(new BorderLayout());
+        topWrapper.add(cornerPanel, BorderLayout.WEST);
+        topWrapper.add(topPanel, BorderLayout.CENTER);
+
+        JPanel rightWrapper = new JPanel(new BorderLayout());
+        rightWrapper.add(cornerPanel, BorderLayout.NORTH);
+        rightWrapper.add(rightPanel, BorderLayout.CENTER);
+        rightWrapper.add(cornerPanel, BorderLayout.SOUTH);
+
+        add(rightWrapper, BorderLayout.EAST);
+        add(topWrapper, BorderLayout.NORTH);
+        add(bottomWrapper, BorderLayout.SOUTH);
     }
 
     public void onSquareClicked(Square clickedSquare) {
