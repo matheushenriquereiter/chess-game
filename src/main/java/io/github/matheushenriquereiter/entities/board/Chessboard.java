@@ -80,18 +80,15 @@ public class Chessboard extends JFrame {
         JPanel rightPanel = new JPanel(new GridLayout(8, 1));
         JPanel letterPanel = new JPanel(new GridLayout(1, 8));
 
-        JPanel cornerPanel = new JPanel();
-        cornerPanel.setPreferredSize(new Dimension(20, 20));
-
         for (int i = 0; i <= 7; i++) {
             JLabel rightLabel = new JLabel();
             rightLabel.setPreferredSize(new Dimension(20, 20));
-            topPanel.add(rightLabel);
+            rightPanel.add(rightLabel);
 
             JLabel numberLabel = new JLabel(String.valueOf(8 - i));
             numberLabel.setHorizontalAlignment(SwingConstants.CENTER);
             numberLabel.setFont(new Font("Arial", Font.BOLD, 14));
-            numberLabel.setPreferredSize(new Dimension(60, 100));
+            numberLabel.setPreferredSize(new Dimension(60, 100)); // LARGURA: 60
             numberPanel.add(numberLabel);
 
             for (int j = 0; j <= 7; j++) {
@@ -119,17 +116,36 @@ public class Chessboard extends JFrame {
         add(numberPanel, BorderLayout.WEST);
 
         JPanel bottomWrapper = new JPanel(new BorderLayout());
-        bottomWrapper.add(cornerPanel, BorderLayout.WEST);
+        JPanel bottomLeftCorner = new JPanel();
+        bottomLeftCorner.setPreferredSize(new Dimension(60, 60));
+
+        JPanel bottomRightCorner = new JPanel();
+        bottomRightCorner.setPreferredSize(new Dimension(20, 60));
+
+        bottomWrapper.add(bottomLeftCorner, BorderLayout.WEST);
         bottomWrapper.add(letterPanel, BorderLayout.CENTER);
+        bottomWrapper.add(bottomRightCorner, BorderLayout.EAST);
 
         JPanel topWrapper = new JPanel(new BorderLayout());
-        topWrapper.add(cornerPanel, BorderLayout.WEST);
+        JPanel topLeftCorner = new JPanel();
+        topLeftCorner.setPreferredSize(new Dimension(60, 20));
+
+        JPanel topRightCorner = new JPanel();
+        topRightCorner.setPreferredSize(new Dimension(20, 20));
+
+        topWrapper.add(topLeftCorner, BorderLayout.WEST);
         topWrapper.add(topPanel, BorderLayout.CENTER);
+        topWrapper.add(topRightCorner, BorderLayout.EAST);
 
         JPanel rightWrapper = new JPanel(new BorderLayout());
-        rightWrapper.add(cornerPanel, BorderLayout.NORTH);
+        JPanel rightTopCorner = new JPanel();
+        rightTopCorner.setPreferredSize(new Dimension(20, 20));
+        JPanel rightBottomCorner = new JPanel();
+        rightBottomCorner.setPreferredSize(new Dimension(20, 60));
+
+        rightWrapper.add(rightTopCorner, BorderLayout.NORTH);
         rightWrapper.add(rightPanel, BorderLayout.CENTER);
-        rightWrapper.add(cornerPanel, BorderLayout.SOUTH);
+        rightWrapper.add(rightBottomCorner, BorderLayout.SOUTH);
 
         add(rightWrapper, BorderLayout.EAST);
         add(topWrapper, BorderLayout.NORTH);
