@@ -25,7 +25,7 @@ public class Chessboard extends JFrame {
         createSquares();
 
 
-        positionChessPieces(whitePieces, blackPieces);
+        setUpChessPieces(whitePieces, blackPieces);
 
         setVisible(true);
         pack();
@@ -35,7 +35,7 @@ public class Chessboard extends JFrame {
         return row >= 0 && row <= 7 && column >= 0 && column <= 7;
     }
 
-    public void positionChessPieces(Piece[][] whitePieces, Piece[][] blackPieces) {
+    public void setUpChessPieces(Piece[][] whitePieces, Piece[][] blackPieces) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j <= 7; j++) {
                 squares[i][j].setPiece(whitePieces[i][j]);
@@ -116,25 +116,37 @@ public class Chessboard extends JFrame {
             }
 
             selectedSquare.removePiece();
-            changePlayerTurn();
             selectedSquare = null;
             selectedPiece = null;
+
+            changePlayerTurn();
 
             if (isCheckmate()) {
                 JOptionPane.showMessageDialog(this, "Winning team: %s Pieces".formatted(playerTurn == PieceColor.WHITE ? "Black" : "White"), "Game Over", JOptionPane.PLAIN_MESSAGE);
 
-                for (int i = 0; i <= 7; i++) {
-                    for (int j = 0; j <= 7; j++) {
-                        squares[i][j].removePiece();
-                    }
-                }
+                resetGame();
+            }
 
-                positionChessPieces(whitePieces, blackPieces);
+            if (!hasAvailableMoves()) {
+                JOptionPane.showMessageDialog(this, "Stalemate", "Game Over", JOptionPane.PLAIN_MESSAGE);
+
+                resetGame();
             }
         }
     }
 
-    private boolean isPawnPromotable(Square clickedSquare) {
+    public void resetGame() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                squares[i][j].removePiece();
+            }
+        }
+
+        playerTurn = PieceColor.WHITE;
+        setUpChessPieces(whitePieces, blackPieces);
+    }
+
+    public boolean isPawnPromotable(Square clickedSquare) {
         return selectedPiece instanceof Pawn && (clickedSquare.getRow() == 0 || clickedSquare.getRow() == 7);
     }
 
@@ -208,7 +220,6 @@ public class Chessboard extends JFrame {
         }
 
         selectedSquare.setPiece(selectedPiece);
-
         return legalMovements;
     }
 
@@ -227,6 +238,17 @@ public class Chessboard extends JFrame {
     }
 
     public boolean isCheckmate() {
+        Square kingSquare = getCurrentTurnKingSquare();
+        King currentTurnKing = (King) kingSquare.getPiece();
+
+        if (currentTurnKing.isInCheck(kingSquare.getRow(), kingSquare.getColumn(), squares)) {
+            return !hasAvailableMoves();
+        }
+
+        return false;
+    }
+
+    public boolean hasAvailableMoves() {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
                 Square square = squares[i][j];
@@ -235,12 +257,12 @@ public class Chessboard extends JFrame {
                     List<Position> legalMovements = getLegalMovements(square, square.getPiece());
 
                     if (!legalMovements.isEmpty()) {
-                        return false;
+                        return true;
                     }
                 }
             }
         }
 
-        return true;
+        return false;
     }
 }
