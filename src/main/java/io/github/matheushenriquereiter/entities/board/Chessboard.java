@@ -7,6 +7,7 @@ import io.github.matheushenriquereiter.enums.SquareColor;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Chessboard extends JFrame {
@@ -88,7 +89,7 @@ public class Chessboard extends JFrame {
             JLabel numberLabel = new JLabel(String.valueOf(8 - i));
             numberLabel.setHorizontalAlignment(SwingConstants.CENTER);
             numberLabel.setFont(new Font("Arial", Font.BOLD, 14));
-            numberLabel.setPreferredSize(new Dimension(60, 100)); // LARGURA: 60
+            numberLabel.setPreferredSize(new Dimension(60, 100));
             numberPanel.add(numberLabel);
 
             for (int j = 0; j <= 7; j++) {
@@ -174,16 +175,15 @@ public class Chessboard extends JFrame {
                 clickedSquare.removePiece();
             }
 
+            clickedSquare.setPiece(selectedPiece);
+            selectedSquare.removePiece();
+
             if (isPawnPromotable(clickedSquare)) {
-                clickedSquare.setPiece(new Queen(playerTurn));
-            } else {
-                clickedSquare.setPiece(selectedPiece);
+                promotePawn(clickedSquare);
             }
 
-            selectedSquare.removePiece();
             selectedSquare = null;
             selectedPiece = null;
-
             changePlayerTurn();
 
             if (isCheckmate()) {
@@ -197,6 +197,33 @@ public class Chessboard extends JFrame {
 
                 resetGame();
             }
+        }
+    }
+
+    public void promotePawn(Square clickedSquare) {
+        Object[] options = {"Queen", "Rook", "Bishop", "Knight"};
+        List<Piece> possibleOptions = new ArrayList<>(Arrays.asList(
+                new Queen(playerTurn),
+                new Rook(playerTurn),
+                new Bishop(playerTurn),
+                new Knight(playerTurn)
+        ));
+
+        int pieceIndex = JOptionPane.showOptionDialog(
+                this,
+                "Choose option:",
+                "Pawn promotion",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (pieceIndex == JOptionPane.CLOSED_OPTION) {
+            clickedSquare.setPiece(possibleOptions.getFirst());
+        } else {
+            clickedSquare.setPiece(possibleOptions.get(pieceIndex));
         }
     }
 
