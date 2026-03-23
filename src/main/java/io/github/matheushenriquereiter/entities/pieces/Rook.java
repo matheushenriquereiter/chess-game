@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
+    public boolean isFirstMove = true;
+
     public Rook(PieceColor color) {
         super(color);
     }

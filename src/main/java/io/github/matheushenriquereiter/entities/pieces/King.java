@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece {
+    public boolean isFirstMove = true;
+
     public King(PieceColor color) {
         super(color);
     }
@@ -15,6 +17,7 @@ public class King extends Piece {
     @Override
     public List<Position> getPossibleMovements(int row, int column, Square[][] squares) {
         List<Position> possibleMovements = new ArrayList<>();
+
 
         possibleMovements.addAll(getOrthogonalMovements(row, column, squares, 1));
         possibleMovements.addAll(getDiagonalMovements(row, column, squares, 1));

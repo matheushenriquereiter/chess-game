@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Pawn extends Piece {
     private final int movementDirection = getColor() == PieceColor.WHITE ? -1 : 1;
-    private boolean isFirstMove = true;
+    public boolean isFirstMove = true;
 
     public Pawn(PieceColor color) {
         super(color);
@@ -60,9 +60,5 @@ public class Pawn extends Piece {
         }
 
         return diagonalMovements;
-    }
-
-    public void setIsFirstMove(boolean isFirstMove) {
-        this.isFirstMove = isFirstMove;
     }
 }

@@ -168,7 +168,15 @@ public class Chessboard extends JFrame {
 
         if (selectedPiece != null && isMovementLegal(clickedSquare, selectedSquare, selectedPiece)) {
             if (selectedPiece instanceof Pawn pawn) {
-                pawn.setIsFirstMove(false);
+                pawn.isFirstMove = false;
+            }
+
+            if (selectedPiece instanceof King king) {
+                king.isFirstMove = false;
+            }
+
+            if (selectedPiece instanceof Rook rook) {
+                rook.isFirstMove = false;
             }
 
             if (clickedSquare.hasPiece()) {
@@ -180,6 +188,25 @@ public class Chessboard extends JFrame {
 
             if (isPawnPromotable(clickedSquare)) {
                 promotePawn(clickedSquare);
+            }
+
+            if (selectedPiece instanceof King && Math.abs(clickedSquare.getColumn() - selectedSquare.getColumn()) == 2) {
+                int row = clickedSquare.getRow();
+                int col = clickedSquare.getColumn();
+
+                if (col == 6) {
+                    Square rookSquare = squares[row][7];
+                    Piece rook = rookSquare.getPiece();
+                    squares[row][5].setPiece(rook);
+                    rookSquare.removePiece();
+                }
+
+                if (col == 2) {
+                    Square rookSquare = squares[row][0];
+                    Piece rook = rookSquare.getPiece();
+                    squares[row][3].setPiece(rook);
+                    rookSquare.removePiece();
+                }
             }
 
             selectedSquare = null;
@@ -212,7 +239,7 @@ public class Chessboard extends JFrame {
         int pieceIndex = JOptionPane.showOptionDialog(
                 this,
                 "Choose option:",
-                "Pawn promotion",
+                "Promote Pawn",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null,
@@ -291,6 +318,29 @@ public class Chessboard extends JFrame {
     public List<Position> getLegalMovements(Square selectedSquare, Piece selectedPiece) {
         List<Position> possibleMovements = selectedPiece.getPossibleMovements(selectedSquare.getRow(), selectedSquare.getColumn(), squares);
         List<Position> legalMovements = new ArrayList<>();
+
+        if (selectedPiece instanceof King king && king.isFirstMove) {
+            int row = selectedSquare.getRow();
+            int column = selectedSquare.getColumn();
+
+            if (!king.isInCheck(row, column, squares)) {
+                if (squares[row][7].hasPiece() && squares[row][7].getPiece() instanceof Rook rightRook && rightRook.isFirstMove) {
+                    if (!squares[row][column + 1].hasPiece() && !squares[row][column + 2].hasPiece()) {
+                        if (!king.isInCheck(row, column + 1, squares) && !king.isInCheck(row, column + 2, squares)) {
+                            possibleMovements.add(new Position(row, column + 2));
+                        }
+                    }
+                }
+
+                if (squares[row][0].hasPiece() && squares[row][0].getPiece() instanceof Rook leftRook && leftRook.isFirstMove) {
+                    if (!squares[row][column - 1].hasPiece() && !squares[row][column - 2].hasPiece() && !squares[row][column - 3].hasPiece()) {
+                        if (!king.isInCheck(row, column - 1, squares) && !king.isInCheck(row, column - 2, squares)) {
+                            possibleMovements.add(new Position(row, column - 2));
+                        }
+                    }
+                }
+            }
+        }
 
         selectedSquare.removePiece();
 
